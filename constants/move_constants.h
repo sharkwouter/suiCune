@@ -6,7 +6,7 @@
 // - BattleAnimations (see data/moves/animations.asm)
 
 //SING is a macro for _SING in Windows SDK
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__APPLE__)
 #ifdef SING
 #undef SING
 #endif

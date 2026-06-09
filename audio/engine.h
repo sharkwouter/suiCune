@@ -1,4 +1,4 @@
-#pragma pack(1)
+#pragma pack(push, 1)
 struct Channel {
     uint16_t musicId;
     uint8_t musicBank;
@@ -79,6 +79,7 @@ struct Channel {
     uint8_t field2f;
     uint16_t field30;
 };
+#pragma pack(pop)
 
 void v_InitSound(void);
 void MusicFadeRestart(void);

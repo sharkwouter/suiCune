@@ -39,7 +39,7 @@ void BattleAnimCmd_2GFX(void);
 void BattleAnimCmd_3GFX(void);
 void BattleAnimCmd_4GFX(void);
 void BattleAnimCmd_5GFX(void);
-void BattleAnimCmd_NGFX(uint8_t c, ...);
+void BattleAnimCmd_NGFX(unsigned int c, ...);
 void BattleAnimCmd_IncObj(uint8_t a);
 void BattleAnimCmd_IncBGEffect(uint8_t c);
 void BattleAnimCmd_SetObj(uint8_t a, uint8_t jt);

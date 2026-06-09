@@ -1098,7 +1098,7 @@ loop:
 
 }
 
-void BattleAnimCmd_NGFX(uint8_t c, ...){
+void BattleAnimCmd_NGFX(unsigned int c, ...){
     // LD_A_addr(wBattleAnimByte);
     // AND_A(0xf);
     // LD_C_A;
