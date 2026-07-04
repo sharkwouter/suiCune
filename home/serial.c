@@ -6,6 +6,7 @@
 #include "copy_tilemap.h"
 #include "../util/network.h"
 
+#if FEATURE_NETWORKING
 static uint8_t SerialDisconnected(uint8_t a);
 
 //  The serial interrupt.
@@ -18,6 +19,7 @@ void Serial(void){
     // LDH_A_addr(hMobileReceive);
     // AND_A_A;
     // IF_NZ goto mobile;
+#if FEATURE_MOBILE
     if(hram.hMobileReceive != FALSE) {
     // mobile:
         // CALL(aMobileReceive);
@@ -26,6 +28,11 @@ void Serial(void){
         // goto end;
         return;
     }
+#else
+    if(false) {
+        return;
+    }
+#endif // FEATURE_MOBILE
 
     // LD_A_addr(wPrinterConnectionOpen);
     // BIT_A(0);
@@ -515,32 +522,33 @@ void WaitLinkTransfer(void){
 }
 
 static void LinkTransfer_Receive(uint8_t b) {
-#if 0
-    // LDH_A_addr(hSerialReceive);
-    // LD_addr_A(wOtherPlayerLinkMode);
-    Network_SafeTryRecvByte(&wram->wOtherPlayerLinkMode);
-    log_debug("wOtherPlayerLinkMode = %d\n", wram->wOtherPlayerLinkMode);
-    // AND_A(0xf0);
-    // CP_A_B;
-    // RET_NZ ;
-    if((hram.hSerialReceive & 0xf0) != b)
-        return;
-    // XOR_A_A;
-    // LDH_addr_A(hSerialReceive);
-    hram.hSerialReceive = 0;
-    // LD_A_addr(wOtherPlayerLinkMode);
-    // AND_A(0xf);
-    // LD_addr_A(wOtherPlayerLinkAction);
-    wram->wOtherPlayerLinkAction = wram->wOtherPlayerLinkMode & 0xf;
-    log_debug("wOtherPlayerLinkAction = %d\n", wram->wOtherPlayerLinkAction);
-    // RET;
-#else
+#if FEATURE_NETWORKING
     if(Network_SafeExchangeBytes(&wram->wOtherPlayerLinkMode, &b, 1)) {
         log_debug("%d ?= %d\n", wram->wOtherPlayerLinkMode, b);
         if((wram->wOtherPlayerLinkMode & 0xf0) != (b & 0xf0))
             return;
         wram->wOtherPlayerLinkAction = wram->wOtherPlayerLinkMode & 0xf;
     }
+#else
+    return;
+    // LDH_A_addr(hSerialReceive);
+    // LD_addr_A(wOtherPlayerLinkMode);
+    // Network_SafeTryRecvByte(&wram->wOtherPlayerLinkMode);
+    // log_debug("wOtherPlayerLinkMode = %d\n", wram->wOtherPlayerLinkMode);
+    // AND_A(0xf0);
+    // CP_A_B;
+    // RET_NZ ;
+    // if((hram.hSerialReceive & 0xf0) != b)
+    //     return;
+    // XOR_A_A;
+    // LDH_addr_A(hSerialReceive);
+    // hram.hSerialReceive = 0;
+    // LD_A_addr(wOtherPlayerLinkMode);
+    // AND_A(0xf);
+    // LD_addr_A(wOtherPlayerLinkAction);
+    // wram->wOtherPlayerLinkAction = wram->wOtherPlayerLinkMode & 0xf;
+    // log_debug("wOtherPlayerLinkAction = %d\n", wram->wOtherPlayerLinkAction);
+    // RET;
 #endif
 }
 
@@ -635,3 +643,11 @@ void SetBitsForTimeCapsuleRequestIfNotLinked(void){
     gb_write(rSC, (1 << rSC_ON) | (0 << rSC_CLOCK));
     // RET;
 }
+
+#else
+void Serial(void) {
+    hram.hSerialConnectionStatus = CONNECTION_NOT_ESTABLISHED;
+    hram.hSerialReceivedNewData = TRUE;
+    hram.hSerialSend = SERIAL_NO_DATA_BYTE;
+}
+#endif // FEATURE_NETWORKING

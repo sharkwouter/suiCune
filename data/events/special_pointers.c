@@ -58,10 +58,13 @@
 void (*const SpecialsPointers[])(void) = {
     add_special(WarpToSpawnPoint),
 // Communications
+#if FEATURE_NETWORKING
     add_special(SetBitsForLinkTradeRequest),
     add_special(WaitForLinkedFriend),
     add_special(CheckLinkTimeout_Receptionist),
+#endif // FEATURE_NETWORKING
     add_special(TryQuickSave),
+#if FEATURE_NETWORKING
     add_special(CheckBothSelectedSameRoom),
     // add_special(FailedLinkToPast),
     add_special(CloseLink),
@@ -74,6 +77,7 @@ void (*const SpecialsPointers[])(void) = {
     add_special(Colosseum),
     // add_special(TimeCapsule),
     add_special(CableClubCheckWhichChris),
+#endif // FEATURE_NETWORKING
     add_special(CheckMysteryGift),
     add_special(GetMysteryGiftItem),
     add_special(UnlockMysteryGift),
@@ -169,6 +173,7 @@ void (*const SpecialsPointers[])(void) = {
     add_special(PrintDiploma),
 
 // Crystal only
+#if FEATURE_MOBILE
     add_special(Function11ac3e),
     add_special(Function11b444),
     add_special(Function11b5e8),
@@ -176,9 +181,12 @@ void (*const SpecialsPointers[])(void) = {
     add_special(Function11b879),
     add_special(Function11b920),
     add_special(Function11b93b),
+#endif // FEATURE_MOBILE
     add_special(BattleTowerRoomMenu),
+#if FEATURE_MOBILE
     add_special(Function1700ba),
     add_special(Function170114),
+#endif // FEATURE_MOBILE
     add_special(BattleTowerBattle),
     add_special(Function1704e1),
     add_special(UnusedBattleTowerDummySpecial1), // Unused
@@ -187,20 +195,24 @@ void (*const SpecialsPointers[])(void) = {
     add_special(CheckForBattleTowerRules),
     add_special(GiveOddEgg),
     // add_special(Reset), // bank 0
+#if FEATURE_MOBILE
     add_special(Function1011f1),
     add_special(Function101220),
     add_special(Function101225),
     add_special(Function101231),
+#endif // FEATURE_MOBILE
     add_special(MoveTutor),
     add_special(OmanyteChamber),
     // add_special(Function11c1ab), // Unused as a special
     add_special(BattleTowerAction),
     add_special(DisplayUnownWords),
     add_special(Menu_ChallengeExplanationCancel),
+#if FEATURE_MOBILE
     add_special(Function17d2b6),
     add_special(Function17d2ce),
     add_special(BattleTowerMobileError),
     add_special(AskMobileOrCable),
+#endif // FEATURE_MOBILE
     add_special(HoOhChamber),
     // add_special(Function102142), // Unused as a special
     add_special(CelebiShrineEvent),
@@ -214,19 +226,27 @@ void (*const SpecialsPointers[])(void) = {
     add_special(MonCheck),
     add_special(SetPlayerPalette),
     // add_special(UnusedBattleTowerDummySpecial2),
+#if FEATURE_MOBILE
     add_special(Mobile_SelectThreeMons),
     add_special(Function1037eb),
+#endif // FEATURE_MOBILE
     add_special(Function10383c),
     add_special(StubbedTrainerRankings_Healings),
     add_special(RefreshSprites),
+#if FEATURE_MOBILE
     add_special(Function1037c2),
+#endif // FEATURE_MOBILE
     add_special(Mobile_DummyReturnFalse),
+#if FEATURE_MOBILE
     add_special(Function103780),
     add_special(Function10387b),
     add_special(AskRememberPassword),
+#endif // FEATURE_MOBILE
     add_special(LoadMapPalettes),
     // add_special(UnusedFindItemInPCOrBag),
     add_special(InitialSetDSTFlag),
     add_special(InitialClearDSTFlag),
+#if FEATURE_MOBILE
     add_special(BattleTowerRoomMenu_Mobile),
+#endif // FEATURE_MOBILE
 };

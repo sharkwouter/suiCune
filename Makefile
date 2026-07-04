@@ -19,6 +19,14 @@ ifeq ($(BUGFIX), 1)
 	EXTRA_CFLAGS += -DBUGFIX=1
 endif
 
+ifeq ($(NETWORK), 0)
+	EXTRA_CFLAGS += -DFEATURE_NETWORKING=0
+endif
+
+ifeq ($(MOBILE), 0)
+	EXTRA_CFLAGS += -DFEATURE_MOBILE=0
+endif
+
 ifeq ($(FASTBG), 1)
 	EXTRA_CFLAGS += -DENHANCEMENT_DRAW_BG_IN_ONE_FRAME=1
 endif
@@ -142,8 +150,12 @@ ifeq ($(OS),Windows_NT)
 	OBJS += icon.o
 endif
 
+ifneq ($(NETWORK), 0)
+	OBJS += lib/libmobile.a
+endif
+
 all: $(TARGET)
-$(TARGET): $(OBJS) lib/libmobile.a
+$(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(EXEOUT)$@ $^ $(LDFLAGS) $(LDLIBS) 
 
 %.obj: %.c

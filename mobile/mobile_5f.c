@@ -33,6 +33,7 @@
 #include "../engine/pokedex/unown_dex.h"
 #include "../engine/pokemon/evolve.h"
 
+#if FEATURE_MOBILE
 uint8_t* sMobileCrashCheckPointer;
 uint8_t* gMobile_wcd20_wcd21;
 uint8_t* gMobile_wcd49_wcd4a;
@@ -235,6 +236,7 @@ const uint16_t HaveWantPals[] = {
     rgb(0, 0, 0),
     rgb(0, 0, 0),
 };
+#endif // FEATURE_MOBILE
 
 //  Valid character ranges:
 //  $0, $5 - $13, $19 - $1c, $26 - $34, $3a - $3e, $40 - $48, $60 - $ff
@@ -368,6 +370,7 @@ bool CheckStringForErrors_IgnoreTerminator(const uint8_t* de, uint8_t c){
     return false;
 }
 
+#if FEATURE_MOBILE
 void Function17d0f3(void){
     // LD_A_addr(wc608 + 5);
     // LD_addr_A(wOTTrademonSpecies);
@@ -501,6 +504,7 @@ void Mobile_CopyDefaultMailAuthor(void){
     U82CB(wram->wMobileMonMail.author, PLAYER_NAME_LENGTH, Mobile5F_PlayersName);
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 u8_flag_s CheckStringContainsLessThanBNextCharacters(const uint8_t* de, uint8_t b, uint8_t c){
     do {
@@ -755,6 +759,7 @@ const struct MenuData MenuData_ChallengeRegisterExplanationCancel = {
     },
 };
 
+#if FEATURE_MOBILE
 // Mobile_DownloadNewsSpecial
 void Function17d2b6(void){
     // CALL(aFunction17d2c0);
@@ -1005,6 +1010,7 @@ void Function17d3f6(void){
 
     return Function17d405();
 }
+#endif // FEATURE_MOBILE
 
 void Function17d405(void){
     // CALL(aDisableLCD);
@@ -1051,6 +1057,7 @@ void Function17d405(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 // MobileNews_ReadNewsLoop
 void Function17d45a(void){
     while(1) {
@@ -4836,12 +4843,14 @@ void Function17e6de(uint8_t a){
     } while(--b != 0);
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 const char PokemonNewsGFX[] = "gfx/mobile/pokemon_news.png";
 const char PostalMarkGFX[] = "gfx/font/postal_mark.png";
 const char PokemonNewsTileAttrmap[] = "gfx/mobile/pokemon_news.bin";
 const char PokemonNewsPalettes[] = "gfx/mobile/pokemon_news.pal";
 
+#if FEATURE_MOBILE
 void RunMobileScript(struct TextPrintState* state){
     // LD_A(0x6);
     // CALL(aOpenSRAM);
@@ -7102,3 +7111,4 @@ bool Function17ff3c(void){
 }
 
 const char String_17ff68[] = "101@"; // "１０１@"
+#endif // FEATURE_NETWORKING

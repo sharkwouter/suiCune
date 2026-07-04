@@ -267,7 +267,9 @@ static void Handler_Script(void) {
 
 static void Handler_TradeAnim(void) {
     // DebugMenu_TradeAnim();
+#if FEATURE_MOBILE
     DebugMenu_MobileTradeAnim();
+#endif // FEATURE_MOBILE
     PlayMusic(DEBUG_MENU_MUSIC);
 }
 
@@ -287,7 +289,9 @@ static void Handler_MysteryGift(void) {
 }
 
 static void Handler_News(void) {
+#if FEATURE_MOBILE
     DebugMenu_News();
+#endif // FEATURE_MOBILE
     PlayMusic(DEBUG_MENU_MUSIC);
 }
 
@@ -838,6 +842,12 @@ const txt_cmd_s Text_LANTestFail[] = {
         t_prompt )
 };
 
+const txt_cmd_s Text_NetworkingDisabled[] = {
+    text_start("Networking is"
+        t_line "disabled!"
+        t_prompt )
+};
+
 void DebugMenu_Link(void) {
     DebugMenu_SaveTilemap();
     DebugMenu_SaveAttrmap();
@@ -847,6 +857,7 @@ void DebugMenu_Link(void) {
     v_LoadStandardFont();
     WaitBGMap();
 
+#if FEATURE_NETWORKING
     OpenSRAM(MBANK(asPlayerData));
     Deserialize_PlayerData(&gPlayer, (const uint8_t *)GBToRAMAddr(sPlayerData));
     CopyBytes(&gCrystal, GBToRAMAddr(sCrystalData), sizeof(gCrystal));
@@ -868,6 +879,9 @@ void DebugMenu_Link(void) {
     CloseWindow();
 
     NetworkCloseConnection();
+#else
+    PrintText(Text_NetworkingDisabled);
+#endif // FEATURE_NETWORKING
     ClearScreen();
     DelayFrames(4);
     DebugMenu_RestoreTilemap();
@@ -1043,6 +1057,7 @@ void DebugMenu_Credits(void) {
 }
 
 void DebugMenu_TradeTest(void) {
+#if FEATURE_NETWORKING
     DebugMenu_SaveTilemap();
     DebugMenu_SaveAttrmap();
     ClearScreen();
@@ -1068,9 +1083,11 @@ void DebugMenu_TradeTest(void) {
     v_LoadFontsExtra1();
     v_LoadFontsExtra2();
     v_LoadStandardFont();
+#endif // FEATURE_NETWORKING
 }
 
 void DebugMenu_MysteryGift(void) {
+#if FEATURE_NETWORKING
     DebugMenu_SaveTilemap();
     DebugMenu_SaveAttrmap();
     ClearScreen();
@@ -1091,8 +1108,10 @@ void DebugMenu_MysteryGift(void) {
     v_LoadFontsExtra1();
     v_LoadFontsExtra2();
     v_LoadStandardFont();
+#endif // FEATURE_NETWORKING
 }
 
+#if FEATURE_MOBILE
 const txt_cmd_s Text_NewsMenuTop[] = {
     text_start("What would you"
         t_line "like to do?"
@@ -1183,7 +1202,9 @@ loop:
     v_LoadStandardFont();
     DelayFrames(4);
 }
+#endif // FEATURE_MOBILE
 
+#if FEATURE_MOBILE
 void DebugMenu_MobileTradeAnim(void) {
     DebugMenu_SaveTilemap();
     DebugMenu_SaveAttrmap();
@@ -1196,3 +1217,4 @@ void DebugMenu_MobileTradeAnim(void) {
     v_LoadFontsExtra2();
     v_LoadStandardFont();
 }
+#endif // FEATURE_MOBILE

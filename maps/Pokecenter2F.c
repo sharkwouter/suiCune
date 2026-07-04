@@ -148,8 +148,11 @@ bool Script_BattleRoomClosed(script_s* s) {
 }
 bool LinkReceptionistScript_Trade(script_s* s) {
     SCRIPT_BEGIN
-    // checkevent(EVENT_GAVE_MYSTERY_EGG_TO_ELM)
-    // iffalse_jump(Script_TradeCenterClosed)
+#if !FEATURE_NETWORKING
+    sjump(Script_TradeCenterClosed)
+#else
+    checkevent(EVENT_GAVE_MYSTERY_EGG_TO_ELM)
+    iffalse_jump(Script_TradeCenterClosed)
     opentext
     writetext(Text_TradeReceptionistIntro)
     yesorno
@@ -224,11 +227,12 @@ Mobile:
 Mobile_Abort:
     s_end
 Mobile_TrySave:
-    writetext(Text_MustSaveGame)
-    yesorno
-    iffalse(Mobile_DidNotSave)
-    special(TryQuickSave)
-    iffalse(Mobile_DidNotSave)
+// For now, removing saving step
+    // writetext(Text_MustSaveGame)
+    // yesorno
+    // iffalse(Mobile_DidNotSave)
+    // special(TryQuickSave)
+    // iffalse(Mobile_DidNotSave)
     special(Function1011f1)
     writetext(Text_PleaseComeIn)
     waitbutton
@@ -240,6 +244,7 @@ Mobile_DidNotSave:
     closetext
     setval(TRUE)
     s_end
+#endif // FEATURE_NETWORKING
     SCRIPT_END
 }
 bool BattleTradeMobile_WalkIn(script_s* s) {
@@ -251,8 +256,11 @@ bool BattleTradeMobile_WalkIn(script_s* s) {
 }
 bool LinkReceptionistScript_Battle(script_s* s) {
     SCRIPT_BEGIN
-    // checkevent(EVENT_GAVE_MYSTERY_EGG_TO_ELM)
-    // iffalse_jump(Script_BattleRoomClosed)
+#if !FEATURE_NETWORKING
+    sjump(Script_TradeCenterClosed)
+#else
+    checkevent(EVENT_GAVE_MYSTERY_EGG_TO_ELM)
+    iffalse_jump(Script_BattleRoomClosed)
     opentext
     writetext(Text_BattleReceptionistIntro)
     yesorno
@@ -330,9 +338,10 @@ Mobile:
 Mobile_Abort:
     s_end
 Mobile_TrySave:
-    writetext(Text_MustSaveGame)
-    yesorno
-    iffalse(Mobile_DidNotSave)
+// For now, removing saving step
+    // writetext(Text_MustSaveGame)
+    // yesorno
+    // iffalse(Mobile_DidNotSave)
     special(Function103780)
     iffalse(Mobile_DidNotSave)
     special(Function1011f1)
@@ -363,6 +372,7 @@ Mobile_DidNotSelect:
 Mobile_OK:
     setval(TRUE)
     s_end
+#endif // FEATURE_NETWORKING
     SCRIPT_END
 }
 bool Script_TimeCapsuleClosed(script_s* s) {

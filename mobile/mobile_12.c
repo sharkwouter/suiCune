@@ -22,6 +22,7 @@
 #include "../data/mobile/prefecture_to_postcode_pairs.h"
 #include "../util/variadic_macros.h"
 
+#if FEATURE_MOBILE
 const char* Prefectures[] = {
 // Quick and dirty solution for the margin offset. In this list, strings must be left-aligned.
 #if defined(_CRYSTAL_AU)
@@ -4242,3 +4243,4 @@ void LoadZipcodeWithUniversalFormat(void){
     CloseSRAM();
     // ret
 }
+#endif // FEATURE_MOBILE

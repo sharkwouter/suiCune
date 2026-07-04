@@ -22,6 +22,7 @@ void GiveOddEgg(void){
     return v_GiveOddEgg();
 }
 
+#if FEATURE_MOBILE
 // MobilePassword
 //  TODO: Add password censoring mechanism.
 void Function11765d(void){
@@ -1236,3 +1237,4 @@ void MobileStudium_JumptableIncrement(void){
     wram->wJumptableIndex++;
     // RET;
 }
+#endif // FEATURE_MOBILE

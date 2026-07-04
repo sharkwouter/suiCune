@@ -329,7 +329,9 @@ void MobileScriptChar(struct TextPrintState* state) {
     // LD_B_H;
     state->bc = state->hl;
     // FARCALL(aRunMobileScript);
+#if FEATURE_MOBILE
     RunMobileScript(state);
+#endif // FEATURE_MOBILE
     // JP(mPlaceNextChar);
 }
 

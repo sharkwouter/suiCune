@@ -11,6 +11,7 @@
 // INCLUDE "constants/hardware_constants.asm"
 // INCLUDE "constants/mobile_constants.asm"
 
+#if FEATURE_MOBILE
 //  Mobile Adapter protocol commands
 #define MOBILE_COMMAND_BEGIN_SESSION     (0x10)
 #define MOBILE_COMMAND_END_SESSION (0x11)
@@ -13733,3 +13734,4 @@ asm_113f4f:
     RET;
 
 }
+#endif // FEATURE_MOBILE

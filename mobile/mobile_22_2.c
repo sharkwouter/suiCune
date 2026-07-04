@@ -15,6 +15,7 @@
 #include "../home/map_objects.h"
 #include "../data/text/common.h"
 
+#if FEATURE_MOBILE
 void Function8b342(void){
 //  Loads the map data pointer, then runs through a
 //  dw with three dummy functions. Spends a lot of energy
@@ -1670,3 +1671,4 @@ const uint8_t Unknown_8ba1c[] = {
 const uint8_t Unknown_8ba1f[] = {
     1, 2, 4, 3, (uint8_t)-1,
 };
+#endif // FEATURE_MOBILE

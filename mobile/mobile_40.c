@@ -61,6 +61,7 @@
 #include "../data/text/battle.h"
 #include "../charmap.h"
 
+#if FEATURE_MOBILE
 const mobile_comm_fn_t *gMobileCommsJumptable;
 uint8_t* gMobile_wcd3b; // ChunkedDataSource
 uint8_t* gMobile_wcd3e; // ChunkedDataDest
@@ -2405,7 +2406,9 @@ bool Function1009f3(void){
     // RET;
     return false;
 }
+#endif // FEATURE_MOBILE
 
+#if FEATURE_NETWORKING
 static uint8_t v_LinkBattleSendReceiveAction_StageForSend(void){
     // LD_A_addr(wBattlePlayerAction);
     // AND_A_A;  // BATTLEPLAYERACTION_USEMOVE?
@@ -2442,6 +2445,7 @@ static uint8_t v_LinkBattleSendReceiveAction_StageForSend(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 static void v_LinkBattleSendReceiveAction_MobileBattle_SendReceiveAction(void){
     // CALL(aFunction100acf);
     Function100acf();
@@ -2493,6 +2497,7 @@ static void v_LinkBattleSendReceiveAction_MobileBattle_SendReceiveAction(void){
     // goto asm_100ace;
     return;
 }
+#endif // FEATURE_MOBILE
 
 static void v_LinkBattleSendReceiveAction_LinkBattle_SendReceiveAction(void){
     // LD_A_addr(wLinkBattleSentAction);
@@ -2555,6 +2560,7 @@ void v_LinkBattleSendReceiveAction(void){
     // CP_A(LINK_MOBILE);
     // IF_NZ goto not_mobile;
     if(wram->wLinkMode == LINK_MOBILE) {
+#if FEATURE_MOBILE
         // CALL(av_LinkBattleSendReceiveAction_MobileBattle_SendReceiveAction);
         v_LinkBattleSendReceiveAction_MobileBattle_SendReceiveAction();
         // CALL(aFunction100da5);
@@ -2562,6 +2568,7 @@ void v_LinkBattleSendReceiveAction(void){
         // FARCALL(aFinishBattleAnim);
         FinishBattleAnim();
         // goto done;
+#endif // FEATURE_MOBILE
     }
     else {
     // not_mobile:
@@ -2574,7 +2581,9 @@ void v_LinkBattleSendReceiveAction(void){
     return;
 
 }
+#endif // FEATURE_NETWORKING
 
+#if FEATURE_MOBILE
 // SetupMobileActionBuffer?
 void Function100acf(void){
     // LD_DE(mUnknown_100b0a);
@@ -3191,6 +3200,7 @@ bool Function100db0(void){
     // RET;
     return false;
 }
+#endif // FEATURE_MOBILE
 
 bool Function100dc0(void){
     // LD_A_addr(wLinkMode);
@@ -3211,6 +3221,7 @@ bool Function100dc0(void){
     return false;
 }
 
+#if FEATURE_MOBILE
 void Mobile_SetOverworldDelay(void){
     // LD_A(30);
     // LD_addr_A(wOverworldDelay);
@@ -3868,6 +3879,7 @@ uint16_t Function1010de(const uint8_t* hl, uint16_t bc){
     // RET;
     return de;
 }
+#endif // FEATURE_MOBILE
 
 static species_t LoadSelectedPartiesForColosseum_GetNthSpecies(const uint8_t* de, const uint8_t* hl, uint8_t a) {
 //  Preserves hl and de
@@ -4094,6 +4106,7 @@ void LoadSelectedPartyForBattleTower(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 // Mobile_StartLinkMode?
 void Function1011f1(void){
     // LD_A(BANK(s4_a60c));
@@ -11274,6 +11287,7 @@ bool MobileCheckRemainingBattleTime(void){
     // SCF;
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 // Mobile_SelectThreeMons2
 void Function10383c(void){
@@ -11321,6 +11335,7 @@ const txt_cmd_s PickThreeMonForMobileBattleText[] = {
     text_end
 };
 
+#if FEATURE_MOBILE
 // PrintBattleRemainingTimeText
 void Function10387b(void){
     // FARCALL(aMobile_AlwaysReturnNotCarry);
@@ -11344,3 +11359,4 @@ const txt_cmd_s MobileBattleRemainingTimeText[] = {
     text_far(v_MobileBattleRemainingTimeText)
     text_end
 };
+#endif // FEATURE_NETWORKING

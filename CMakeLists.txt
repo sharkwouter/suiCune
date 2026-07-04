@@ -31,6 +31,18 @@ if(USE_PCG)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENHANCEMENT_USE_PCG=1")
 endif(USE_PCG)
 
+set(FEATURE_MOBILE_DEFAULT ON)
+option(FEATURE_NETWORKING "Enable networking features" ON)
+if(NOT FEATURE_NETWORKING)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DFEATURE_NETWORKING=0")
+  set(FEATURE_MOBILE_DEFAULT OFF)
+endif(FEATURE_NETWORKING)
+
+option(FEATURE_MOBILE "Enable mobile adapter features" ${FEATURE_MOBILE_DEFAULT})
+if(NOT FEATURE_MOBILE)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DFEATURE_MOBILE=0")
+endif(FEATURE_MOBILE)
+
 set(USE_PHYSFS_DEFAULT OFF)
 if(WIN32)
     set(USE_PHYSFS_DEFAULT ON)
@@ -41,7 +53,7 @@ if(USE_PHYSFS)
 endif(USE_PHYSFS)
 
 set(USE_SDLNET_DEFAULT OFF)
-if(WIN32)
+if(FEATURE_NETWORKING AND WIN32)
     set(USE_SDLNET_DEFAULT ON)
 endif()
 option(USE_SDLNET "Use SDL_Net for online support" ${USE_SDLNET_DEFAULT})
@@ -1029,23 +1041,25 @@ add_executable(${PROJECT_NAME}
   wram.c
 )
 
-add_library(libmobile
-  lib/libmobile/callback.c
-  lib/libmobile/commands.c
-  lib/libmobile/config.c
-  lib/libmobile/debug.c
-  lib/libmobile/dns.c
-  lib/libmobile/inet_pton.c
-  lib/libmobile/mobile.c
-  lib/libmobile/relay.c
-  lib/libmobile/serial.c
-  lib/libmobile/util.c
-)
+if(FEATURE_MOBILE)
+  add_library(libmobile
+    lib/libmobile/callback.c
+    lib/libmobile/commands.c
+    lib/libmobile/config.c
+    lib/libmobile/debug.c
+    lib/libmobile/dns.c
+    lib/libmobile/inet_pton.c
+    lib/libmobile/mobile.c
+    lib/libmobile/relay.c
+    lib/libmobile/serial.c
+    lib/libmobile/util.c
+  )
+endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
-  m
-  libmobile
-)
+target_link_libraries(${PROJECT_NAME} PRIVATE m)
+if(FEATURE_MOBILE)
+  target_link_libraries(${PROJECT_NAME} PRIVATE libmobile)
+endif()
 
 include(FindPkgConfig)
 

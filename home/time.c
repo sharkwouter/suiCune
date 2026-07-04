@@ -11,10 +11,12 @@ void Timer(void){
     // LDH_A_addr(hMobile);
     // AND_A_A;
     // IF_Z goto not_mobile;
+#if FEATURE_MOBILE
     if(hram.hMobile) {
         // CALL(aMobileTimer);
         MobileTimer();
     }
+#endif // FEATURE_MOBILE
 
 // not_mobile:
     // POP_AF;

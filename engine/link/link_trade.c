@@ -243,6 +243,7 @@ void LinkTextbox(tile_t* de, uint8_t b, uint8_t c){
     return v_LinkTextbox(de, b, c);
 }
 
+#if FEATURE_NETWORKING
 static void PrintWaitingTextAndSyncAndExchangeNybble_PrintWaitingText(void) {
     static const char Waiting[] = "WAITING..!@";
     // hlcoord(4, 10, wTilemap);
@@ -276,6 +277,7 @@ void PrintWaitingTextAndSyncAndExchangeNybble(void){
     WaitBGMap2();
     // RET;
 }
+#endif // FEATURE_NETWORKING
 
 static bool LinkTradeMenu_TryAnims(void);
 

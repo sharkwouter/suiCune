@@ -34,6 +34,7 @@
 #include "../data/trainers/palettes.h"
 #include "../data/text/common.h"
 
+#if FEATURE_MOBILE
 const char String_89116[] = "-------@"; //db ['"-----@"'];
 const char String_EmptyIDNo[] = "-----@";
 
@@ -5993,6 +5994,7 @@ void Function8ab3b(void){
 }
 
 void Function8ab93(void){
+#if FEATURE_NETWORKING
     if(!LANTryConnection())
         return;
     // CALL(aClearBGPalettes);
@@ -6009,6 +6011,7 @@ void Function8ab93(void){
     Function89b28();
     // RET;
     LANCloseConnection();
+#endif // FEATURE_NETWORKING
 }
 
 uint8_t Function8aba9(void){
@@ -6443,3 +6446,4 @@ bool Function8adcc(void){
     // RET;
     return true;
 }
+#endif // FEATURE_MOBILE

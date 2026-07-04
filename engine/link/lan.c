@@ -10,6 +10,7 @@
 #include "../../home/map_objects.h"
 #include "../../util/network.h"
 
+#if FEATURE_NETWORKING
 static const txt_cmd_s Text_AskHostOrJoin[] = {
     text_start("Would you like to"
         t_line "host or join?"
@@ -60,11 +61,13 @@ static const struct MenuHeader Menu_HostOrJoin = {
     },
 	.defaultOption=1 // default option
 };
+#endif // FEATURE_NETWORKING
 
 void LANConnection_Host(void);
 void LANConnection_Join(void);
 
 void LANConnection(void) {
+#if FEATURE_NETWORKING
     NetworkClearLANCache();
     LoadStandardMenuHeader();
     PrintText(Text_AskHostOrJoin);
@@ -80,17 +83,29 @@ void LANConnection(void) {
     }
     wram->wScriptVar = FALSE;
     CloseWindow();
+#else
+    wram->wScriptVar = FALSE;
+#endif // FEATURE_NETWORKING
 }
 
 bool LANTryConnection(void) {
+#if FEATURE_NETWORKING
     LANConnection();
     return wram->wScriptVar != FALSE;
+#else
+    return FALSE;
+#endif // FEATURE_NETWORKING
 }
 
 void LANCloseConnection(void) {
+#if FEATURE_NETWORKING
     NetworkCloseConnection();
+#else
+    return;
+#endif
 }
 
+#if FEATURE_NETWORKING
 static void PlaceLANConnectionItems(void) {
     char buffer[16];
     uint8_t x = 7, y = 2;
@@ -312,3 +327,4 @@ void LANConnection_Join(void) {
         DelayFrame();
     }
 }
+#endif // FEATURE_NETWORKING

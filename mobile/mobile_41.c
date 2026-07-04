@@ -11,6 +11,7 @@
 
 //  Copies certain values at the time the player enters the Hall of Fame.
 void StubbedTrainerRankings_HallOfFame2(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(sTrainerRankingGameTimeHOF));
     // CALL(aOpenSRAM);
@@ -54,9 +55,11 @@ void StubbedTrainerRankings_HallOfFame2(void){
     // CALL(aCloseSRAM);
     CloseSRAM();
     // RET;
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_MagikarpLength(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(sTrainerRankingLongestMagikarp));
     // CALL(aOpenSRAM);
@@ -135,9 +138,11 @@ void StubbedTrainerRankings_MagikarpLength(void){
     // CALL(aCloseSRAM);
     CloseSRAM();
     // RET;
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_BugContestScore(uint16_t new_score){
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(sTrainerRankingBugContestScore));
     // CALL(aOpenSRAM);
@@ -173,9 +178,13 @@ void StubbedTrainerRankings_BugContestScore(uint16_t new_score){
     // CALL(aCloseSRAM);
     CloseSRAM();
     // RET;
+#else
+    (void)new_score;
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_AddToSlotsWinStreak(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(sTrainerRankingCurrentSlotsStreak));
     // CALL(aOpenSRAM);
@@ -225,9 +234,11 @@ void StubbedTrainerRankings_AddToSlotsWinStreak(void){
     // CALL(aCloseSRAM);
     CloseSRAM();
     // RET;
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_EndSlotsWinStreak(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(sTrainerRankingCurrentSlotsStreak));
     // CALL(aOpenSRAM);
@@ -242,9 +253,11 @@ void StubbedTrainerRankings_EndSlotsWinStreak(void){
     // CALL(aCloseSRAM);
     CloseSRAM();
     // RET;
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_AddToSlotsPayouts(uint16_t de){
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(sTrainerRankingTotalSlotsPayouts));
     // CALL(aOpenSRAM);
@@ -289,9 +302,13 @@ void StubbedTrainerRankings_AddToSlotsPayouts(uint16_t de){
     // CALL(aCloseSRAM);
     CloseSRAM();
     // RET;
+#else
+    (void)de;
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_AddToBattlePayouts(const uint8_t* bc){
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(sTrainerRankingTotalBattlePayouts));
     // CALL(aOpenSRAM);
@@ -338,17 +355,23 @@ void StubbedTrainerRankings_AddToBattlePayouts(const uint8_t* bc){
     // CALL(aCloseSRAM);
     CloseSRAM();
     // RET;
+#else
+    (void)bc;
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_StepCount(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingStepCount);
     // JP(mStubbedTrainerRankings_Increment4Byte);
     return StubbedTrainerRankings_Increment4Byte(sTrainerRankingStepCount);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_BattleTowerWins(void){
 //  //  unreferenced
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(s5_aa8d));
     // CALL(aOpenSRAM);
@@ -364,16 +387,20 @@ void StubbedTrainerRankings_BattleTowerWins(void){
     // LD_HL(sTrainerRankingBattleTowerWins);
     // JP(mStubbedTrainerRankings_Increment2Byte);
     return StubbedTrainerRankings_Increment2Byte(sTrainerRankingBattleTowerWins);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_TMsHMsTaught(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingTMsHMsTaught);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingTMsHMsTaught);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Battles(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_A_addr(wBattleType);
     // CP_A(BATTLETYPE_TUTORIAL);  // Exclude the Dude’s tutorial battle
@@ -383,9 +410,11 @@ void StubbedTrainerRankings_Battles(void){
     // LD_HL(sTrainerRankingBattles);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingBattles);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_WildBattles(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_A_addr(wBattleType);
     // CP_A(BATTLETYPE_TUTORIAL);  // Exclude the Dude’s tutorial battle
@@ -395,144 +424,184 @@ void StubbedTrainerRankings_WildBattles(void){
     // LD_HL(sTrainerRankingWildBattles);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingWildBattles);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_TrainerBattles(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingTrainerBattles);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingTrainerBattles);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Unused1(void){
 //  //  unreferenced
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingUnused1);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingUnused1);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_HallOfFame(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingHOFEntries);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingHOFEntries);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_WildMonsCaught(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingWildMonsCaught);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingWildMonsCaught);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_HookedEncounters(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingHookedEncounters);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingHookedEncounters);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_EggsHatched(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingEggsHatched);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingEggsHatched);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_MonsEvolved(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingMonsEvolved);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingMonsEvolved);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_FruitPicked(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingFruitPicked);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingFruitPicked);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Healings(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingHealings);
     // JP(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingHealings);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_MysteryGift(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingMysteryGift);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingMysteryGift);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Trades(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingTrades);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingTrades);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Fly(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingFly);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingFly);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Surf(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingSurf);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingSurf);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Waterfall(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingWaterfall);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingWaterfall);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_WhiteOuts(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingWhiteOuts);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingWhiteOuts);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_LuckyNumberShow(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingLuckyNumberShow);
     // JR(mStubbedTrainerRankings_Increment2Byte);
     return StubbedTrainerRankings_Increment2Byte(sTrainerRankingLuckyNumberShow);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_PhoneCalls(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingPhoneCalls);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingPhoneCalls);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Unused2(void){
 //  //  unreferenced
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingUnused2);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingUnused2);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_LinkBattles(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingLinkBattles);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingLinkBattles);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Splash(void){
+#if FEATURE_MOBILE
     // RET;
 // Only counts if it’s the player’s turn
     // LDH_A_addr(hBattleTurn);
@@ -543,49 +612,61 @@ void StubbedTrainerRankings_Splash(void){
     // LD_HL(sTrainerRankingSplash);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingSplash);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_TreeEncounters(void){
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingTreeEncounters);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingTreeEncounters);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Unused3(void){
 //  //  unreferenced
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingUnused3);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingUnused3);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_ColosseumWins(void){
 //  //  win
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingColosseumWins);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingColosseumWins);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_ColosseumLosses(void){
 //  //  lose
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingColosseumLosses);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingColosseumLosses);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_ColosseumDraws(void){
 //  //  draw
+#if FEATURE_MOBILE
     // RET;
     // LD_HL(sTrainerRankingColosseumDraws);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingColosseumDraws);
+#endif // FEATURE_MOBILE
 }
 
 //  Counts uses of both Selfdestruct and Explosion.
 void StubbedTrainerRankings_Selfdestruct(void){
+#if FEATURE_MOBILE
     // RET;
 // Only counts if it’s the player’s turn
     // LDH_A_addr(hBattleTurn);
@@ -596,6 +677,7 @@ void StubbedTrainerRankings_Selfdestruct(void){
     // LD_HL(sTrainerRankingSelfdestruct);
     // JR(mStubbedTrainerRankings_Increment3Byte);
     return StubbedTrainerRankings_Increment3Byte(sTrainerRankingSelfdestruct);
+#endif // FEATURE_MOBILE
 }
 
 void StubbedTrainerRankings_Increment4Byte(uint16_t hl){
@@ -1152,20 +1234,21 @@ uint8_t* v_MobilePrintNum(uint8_t* hl, const void* de_, uint8_t b, uint8_t c){
 // - Activates the GS Ball event
 // - Opens the Battle Tower
 void Mobile_DummyReturnFalse(void){
-#if PM_HIDDEN_NETWORK
+#if FEATURE_MOBILE
+    u8_flag_s res = CheckMobileAdapterStatus();
+    wram->wScriptVar = res.a;
+#else
     // XOR_A_A;
     // LD_addr_A(wScriptVar);
     // RET;
     wram->wScriptVar = FALSE;
-#else
-    u8_flag_s res = CheckMobileAdapterStatus();
-    wram->wScriptVar = res.a;
 #endif
 }
 
 // Sets Mobile Adapter status?
 // Stubbed_Function106314
 void SetMobileAdapterStatus(uint8_t c){
+#if FEATURE_MOBILE
     // RET;
     // LD_A(BANK(s4_b000));
     // CALL(aOpenSRAM);
@@ -1185,18 +1268,22 @@ void SetMobileAdapterStatus(uint8_t c){
     // CALL(aCloseSRAM);
     CloseSRAM();
     // RET;
+#else
+    (void)c;
+#endif // FEATURE_MOBILE
 }
 
 u8_flag_s Mobile_AlwaysReturnNotCarry(void){
-#if PM_HIDDEN_NETWORK
+#if FEATURE_MOBILE
+    return CheckMobileAdapterStatus();
+#else
     // OR_A_A;
     // RET;
-    return false;
-#else
-    return CheckMobileAdapterStatus();
-#endif
+    return u8_flag(0, false);
+#endif // FEATURE_MOBILE
 }
 
+#if FEATURE_MOBILE
 //  called by Mobile_DummyReturnFalse in JP Crystal
 // check ~[s4_b000] == [s7_a800]
 u8_flag_s CheckMobileAdapterStatus(void){
@@ -1468,6 +1555,7 @@ void Function106453(void){
     wram->wcf64 = 0x4;
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 void Stubbed_Function106462(void){
     // RET;

@@ -60,6 +60,7 @@ void BattleTowerRoomMenu(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 void BattleTowerRoomMenu_Mobile(void){
 //  special
     // CALL(aInitBattleTowerChallengeRAM);
@@ -340,6 +341,7 @@ void BattleTower_GenerateFakeRecord(void){
     CopyBytes(GBToRAMAddr(s5_a948), wram->wc608, BATTLE_TOWER_DATA_UPLOAD_LENGTH);
     CloseSRAM();
 }
+#endif // FEATURE_MOBILE
 
 void BattleTowerBattle(void){
     // XOR_A_A;  // FALSE
@@ -466,7 +468,9 @@ void RunBattleTowerTrainer(void){
     // LD_A(TRUE);
     // LD_addr_A(wBattleTowerBattleEnded);
     wram->wBattleTowerBattleEnded = TRUE;
+#if FEATURE_MOBILE
     Function170139();
+#endif // FEATURE_MOBILE
     // RET;
 }
 
@@ -1358,10 +1362,12 @@ void BattleTowerAction(void){
     case BATTLETOWERACTION_SAVE_AND_QUIT: return BattleTowerAction_SetByteToQuickSaveChallenge();
         //dw ['BattleTowerAction_SetByteToCancelChallenge'];
     case BATTLETOWERACTION_CHALLENGECANCELED: return BattleTowerAction_SetByteToCancelChallenge();
+#if FEATURE_MOBILE
         //dw ['Function1707ac'];
     case BATTLETOWERACTION_05: return Function1707ac();
         //dw ['Function1707f4'];
     case BATTLETOWERACTION_06: return Function1707f4();
+#endif // FEATURE_MOBILE
         //dw ['SaveBattleTowerLevelGroup'];
     case BATTLETOWERACTION_SAVELEVELGROUP: return SaveBattleTowerLevelGroup();
         //dw ['LoadBattleTowerLevelGroup'];
@@ -1372,12 +1378,15 @@ void BattleTowerAction(void){
     case BATTLETOWERACTION_0A: return Function1708b1();
         //dw ['CheckMobileEventIndex'];
     case BATTLETOWERACTION_CHECKMOBILEEVENT: return CheckMobileEventIndex();
+#if FEATURE_MOBILE
         //dw ['Function1708c8'];
     case BATTLETOWERACTION_0C: return Function1708c8();
         //dw ['Function1708f0'];
     case BATTLETOWERACTION_0D: return Function1708f0();
+#endif // FEATURE_MOBILE
         //dw ['BattleTowerAction_EggTicket'];
     case BATTLETOWERACTION_EGGTICKET: return BattleTowerAction_EggTicket();
+#if FEATURE_MOBILE
         //dw ['Function1709aa'];
     case BATTLETOWERACTION_0F: return Function1709aa();
         //dw ['Function1709bb'];
@@ -1396,6 +1405,7 @@ void BattleTowerAction(void){
     case BATTLETOWERACTION_16: return Function170807();
         //dw ['Function17081d'];
     case BATTLETOWERACTION_17: return Function17081d();
+#endif // FEATURE_MOBILE
         //dw ['BattleTowerAction_LevelCheck'];
     case BATTLETOWERACTION_LEVEL_CHECK: return BattleTowerAction_LevelCheck();
         //dw ['BattleTowerAction_UbersCheck'];
@@ -2079,6 +2089,7 @@ void BattleTowerAction_EggTicket(void){
 
 const char String_MysteryJP[] = "ODD"; //db ['"なぞナゾ@@"'];  // MYSTERY
 
+#if FEATURE_MOBILE
 void Function1709aa(void){
 //  //  BattleTowerAction $0f
     // LDH_A_addr(rSVBK);
@@ -2260,6 +2271,7 @@ void Function1709bb(void){
             break;
     }
 }
+#endif // FEATURE_MOBILE
 
 void Function170a9c(void){
 //  //  BattleTowerAction $11
@@ -2413,7 +2425,7 @@ void LoadOpponentTrainerAndPokemonWithOTSprite(void){
         // LD_B(0);
         // POP_AF;
         // LDH_addr_A(rSVBK);
-        tclass = wram->wBT_OTTrainer.trainerClass - 1;
+        tclass = wram->wBT_OTTrainer.trainerClass;
     }
     else {
         // ld a, $05

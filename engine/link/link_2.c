@@ -8,6 +8,7 @@
 #include "link_trade.h"
 #include "../../charmap.h"
 
+#if FEATURE_NETWORKING
 void LinkMonStatsScreen(void){
     // LD_A_addr(wMenuCursorY);
     // DEC_A;
@@ -39,6 +40,7 @@ void LinkMonStatsScreen(void){
     WaitBGMap2();
     // RET;
 }
+#endif // FEATURE_NETWORKING
 
 void Link_WaitBGMap(void){
     // CALL(aWaitBGMap);

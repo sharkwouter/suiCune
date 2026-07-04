@@ -6,6 +6,9 @@
 #include "json.h"
 #include "assets.h"
 #include "../home/delay.h"
+#include "log.h"
+#include "features.h"
+#if FEATURE_NETWORKING
 
 /// WIP experimental networking system to replace SDLNet.
 /// To disable it, set USE_SDLNET to 1 or compile with USE_SDLNET=1
@@ -30,7 +33,6 @@
 #endif
 #include "../tools/emu/peanut_gb.h"
 #include "../lib/libmobile/mobile.h"
-#include "log.h"
 #include "socket.h"
 extern struct gb_s gb;
 
@@ -1561,7 +1563,7 @@ struct mobile_user_data {
     uint32_t timers[MOBILE_MAX_TIMERS];
     uint8_t config[MOBILE_CONFIG_SIZE];
 };
-static struct mobile_adapter* gMobileAdapter;
+static struct mobile_adapter* gMobileAdapter = NULL;
 static struct mobile_user_data gMobileData;
 static uint8_t gMobileByte;
 static uint8_t gMobileByteLast;
@@ -1969,14 +1971,23 @@ end:
 }
 
 const char* Mobile_GetServerHostname(void) {
+#if FEATURE_MOBILE
     return gServerConfig.hostname;
+#else
+    return "";
+#endif // FEATURE_MOBILE
 }
 
 const char* Mobile_GetServerLoginPassword(uint8_t maxLength) {
+#if FEATURE_MOBILE
     int len = strlen(gServerConfig.loginPass);
     if(len == 0 || len > maxLength)
         return NULL;
     return gServerConfig.loginPass;
+#else
+    (void)maxLength;
+    return "";
+#endif // FEATURE_MOBILE
 }
 
 void MobileConfigCreateDefault(FILE* f) {
@@ -2088,8 +2099,10 @@ void MobileDelSockets(struct mobile_user_data* udata) {
 }
 
 void MobileUpdate(void) {
+#if FEATURE_MOBILE
     if(gMobileAdapter)
         mobile_loop(gMobileAdapter);
+#endif // FEATURE_MOBILE
 }
 
 bool MobileCheckAdapterEnabled(void) {
@@ -2113,6 +2126,7 @@ uint32_t MobileTransfer(uint32_t input) {
 
 // Initialized emulated mobile adapter
 void MobileInit(void) {
+#if FEATURE_MOBILE
     gMobileAdapter = mobile_new(&gMobileData);
     // gMobileData.logpath = "mobile.log";
 
@@ -2158,14 +2172,48 @@ void MobileInit(void) {
     MobileInitTimers(&gMobileData);
     
     mobile_start(gMobileAdapter);
+#else
+    log_info("Mobile adapter is disabled.\n");
+#endif // FEATURE_MOBILE
 }
 
 void MobileQuit(void) {
+#if FEATURE_MOBILE
     mobile_stop(gMobileAdapter);
 
     MobileDelSockets(&gMobileData);
 
     free(gMobileAdapter);
     gMobileAdapter = NULL;
+#endif // FEATURE_MOBILE
 }
 
+#else
+
+bool NetworkInit(void) {
+    log_info("Networking is disabled.\n");
+    return false;
+}
+void NetworkCloseConnection(void) {}
+void NetworkDeinit(void){}
+
+void MobileInit(void) {
+    log_info("Mobile adapter is disabled.\n");
+}
+void MobileUpdate(void) {}
+bool MobileCheckAdapterEnabled(void) { return false; }
+bool MobileCheckSerialEnabled(void) { return false; }
+void MobileQuit(void) {}
+
+const char* Mobile_GetServerHostname(void) {
+    return "";
+}
+
+const char* Mobile_GetServerLoginPassword(uint8_t maxLength) {
+    int len = strlen("pass");
+    if(len == 0 || len > maxLength)
+        return NULL;
+    return "pass";
+}
+
+#endif // FEATURE_NETWORKING

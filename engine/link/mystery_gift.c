@@ -17,6 +17,7 @@
 #include "../../mobile/mobile_22.h"
 #include "../../mobile/mobile_41.h"
 #include "../../data/text/common.h"
+#if FEATURE_NETWORKING
 
 //  hMGRole values
 #define IR_RECEIVER (1)
@@ -1821,6 +1822,7 @@ void MysteryGift_UpdateJoypad(void){
     RET;
 
 }
+#endif // FEATURE_NETWORKING
 
 //  Return true (nz) if decoration c was already received
 bool CheckAndSetMysteryGiftDecorationAlreadyReceived(uint8_t c){
@@ -1987,6 +1989,7 @@ void GetMysteryGiftBank(void){
     OpenSRAM(MBANK(asMysteryGiftData));
 }
 
+#if FEATURE_NETWORKING
 //  You will be sending this data to your mystery gift partner.
 //  Structure is the same as a trainer with species and moves
 //  defined.
@@ -2249,6 +2252,7 @@ void InitMysteryGiftLayout(void){
 
 const char MysteryGiftGFX[] = "gfx/mystery_gift/mystery_gift.png";
 
+#if FEATURE_MOBILE
 static void DoNameCardSwap_ClearScreen(void){
     // CALL(aClearSprites);
     ClearSprites();
@@ -2699,3 +2703,6 @@ void InitNameCardLayout(void){
 
 const char CardTradeGFX[] = "gfx/mystery_gift/card_trade.png";
 const char CardTradeSpriteGFX[] = "gfx/mystery_gift/card_sprite.png";
+
+#endif // FEATURE_MOBILE
+#endif // FEATURE_NETWORKING

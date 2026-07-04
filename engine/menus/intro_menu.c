@@ -165,6 +165,7 @@ static void NewGame_ClearTilemapEtc(void) {
 }
 
 void MysteryGift(void) {
+#if FEATURE_NETWORKING
     // CALL(aUpdateTime);
     UpdateTime();
     // FARCALL(aDoMysteryGiftIfDayHasPassed);
@@ -176,12 +177,12 @@ void MysteryGift(void) {
     CopyBytes(&gPlayer.playerID,  GBToRAMAddr(sPlayerData + (wPlayerID - wPlayerData)), 2);
     CopyBytes(gPlayer.playerName, GBToRAMAddr(sPlayerData + (wPlayerName - wPlayerData)), NAME_LENGTH);
     CloseSRAM();
-
     if(!LANTryConnection())
         return;
     DoMysteryGift();
     LANCloseConnection();
     // RET;
+#endif // FEATURE_NETWORKING
 }
 
 void Option(void) {
@@ -221,6 +222,7 @@ void NewGame(void) {
 }
 
 static void AreYouABoyOrAreYouAGirl(void) {
+#if FEATURE_MOBILE
     // FARCALL(aMobile_AlwaysReturnNotCarry);  // mobile
     u8_flag_s res = Mobile_AlwaysReturnNotCarry();
     // IF_C goto ok;
@@ -236,6 +238,9 @@ static void AreYouABoyOrAreYouAGirl(void) {
     // FARCALL(aInitMobileProfile);  // mobile
     InitMobileProfile(0);
     // RET;
+#else
+    InitGender();
+#endif // FEATURE_MOBILE
 }
 
 void DebugRoom(void) {
@@ -714,6 +719,7 @@ static void PostCreditsSpawn(void) {
 }
 
 static void Continue_MobileAdapterMenu(void) {
+#if FEATURE_MOBILE
     // FARCALL(aMobile_AlwaysReturnNotCarry);  // mobile check
     u8_flag_s res = Mobile_AlwaysReturnNotCarry();
     // RET_NC;
@@ -755,6 +761,7 @@ static void Continue_MobileAdapterMenu(void) {
     // CALL(aDelayFrames);
     DelayFrames(35);
     // RET;
+#endif // FEATURE_MOBILE
 }
 
 // Returns true if the player confirmed the continue.
@@ -2092,7 +2099,7 @@ void GameInit(void) {
     // CALL(aWaitBGMap);
     WaitBGMap();
 
-#if !PM_HIDDEN_NETWORK
+#if FEATURE_MOBILE
     MobileAdapterCheck();
 #endif
 

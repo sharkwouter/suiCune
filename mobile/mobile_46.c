@@ -42,14 +42,14 @@
 #include <string.h>
 
 // static uint8_t gMobileMessageBuffer[256];
-
+uint8_t* gWRAMBank;
 static uint8_t* gMobileMessagePtr; // wc31b-wc31c
 static const txt_cmd_s* gMobileTextPtr; // wc31b-wc31c
 static tile_t* gMobileMessageDestPtr; // wc31d-wc31e
 static const char** gMobileStringList; // wcd4b-wdc4c
+#if FEATURE_MOBILE
 uint8_t* gMobile_wcd4d; // wcd4d-wcd4e
 
-uint8_t* gWRAMBank;
 static union {
     mobile_api_recv_s recvData;
     mobile_api_send_s sendData;
@@ -132,11 +132,13 @@ void asm_11800b(void){
     ReturnToMapFromSubmenu();
     return BattleTowerRoomMenu_DoNothing();
 }
+#endif // FEATURE_MOBILE
 
 void BattleTowerRoomMenu_DoNothing(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 void Function11805f(void){
     // LD_A(0x1);
     // LD_addr_A(wcd38);
@@ -281,6 +283,7 @@ void Function11811a(void){
     // JR(mFunction118125);
     return Mobile_BattleTowerRoomMenu();
 }
+#endif // FEATURE_MOBILE
 
 void v_BattleTowerRoomMenu(void){
     // XOR_A_A;
@@ -352,6 +355,7 @@ void Function118125(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 void v_BattleTowerRoomMenuMobile(void){
     // XOR_A_A;
     // LD_addr_A(wcd38);
@@ -425,6 +429,7 @@ void Mobile_BattleTowerRoomMenu(void){
     ReturnToMapFromSubmenu();
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 void Function118180(void){
     // LD_A_addr(wScriptVar);
@@ -486,6 +491,7 @@ void Function118180(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 // Mobile_DownloadNews
 void Function1181da(void){
     // CALL(aBattleTowerRoomMenu_InitRAM);
@@ -773,6 +779,7 @@ asm_1183a6:
     RET;
 
 }
+#endif // FEATURE_MOBILE
 
 void BattleTowerRoomMenu_InitRAM(void){
     // NOP;
@@ -935,6 +942,7 @@ void Function118473(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 // Mobile_UploadGTSMonJumptable
 void Function1184a5(void){
     //jumptable ['.Jumptable', 'wBattleTowerRoomMenuJumptableIndex']
@@ -1020,6 +1028,7 @@ void Function1184ec(void){
         case 0x28: return Function118e76(); //dw ['Function118e76'];
     }
 }
+#endif // FEATURE_MOBILE
 
 void BattleTowerRoomMenu_Jumptable(void){
     //jumptable ['.Jumptable', 'wBattleTowerRoomMenuJumptableIndex']
@@ -1061,6 +1070,7 @@ void BattleTowerRoomMenu_Jumptable(void){
     }
 }
 
+#if FEATURE_MOBILE
 void BattleTowerRoomMenu_Mobile_Jumptable(void) {
     // the jumptable in the japanese version
     log_debug("Mobile Battle Tower Jumptable 0x%02x\n", wram->wBattleTowerRoomMenuJumptableIndex);
@@ -1765,6 +1775,7 @@ void Function11891c(void){
     BattleTowerRoomMenu_IncrementJumptable();
 
 }
+#endif // FEATURE_MOBILE
 
 void BattleTowerRoomMenu_PickLevelMessage(void){
     // LD_A_addr(wcd38);
@@ -2035,6 +2046,7 @@ void BattleTowerRoomMenu_UpdatePickLevelMenu(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 void BattleTowerRoomMenu_Mobile_03(void){ // 4A9A
     // ld a, [$c31a];$c340
     // and a
@@ -3341,6 +3353,7 @@ void Function118e6d(void){
     // JP(mFunction119e2b);
     Function119e2b(MOBILEAPI_05, &(mobile_api_data_s){});
 }
+#endif // FEATURE_MOBILE
 
 void Function118e76(void){
 // Call $c in BattleTowerRoomMenu2
@@ -3351,6 +3364,7 @@ void Function118e76(void){
     return BattleTowerRoomMenu_IncrementJumptable();
 }
 
+#if FEATURE_MOBILE
 void Function118e7e(void){
     // CALL(aBattleTowerRoomMenu2);
     // RET_C ;
@@ -3360,6 +3374,7 @@ void Function118e7e(void){
     // JP(mFunction119e2b);
     return Function119e2b(MOBILEAPI_1B, &(mobile_api_data_s){});
 }
+#endif // FEATURE_MOBILE
 
 void BattleTowerRoomMenu_CallRoomMenu2(void){
     // CALL(aBattleTowerRoomMenu2);
@@ -3372,6 +3387,7 @@ void BattleTowerRoomMenu_CallRoomMenu2(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 void Function118e92(void){
     // CALL(aFunction118440);
     Function118440();
@@ -6263,6 +6279,7 @@ void BattleTowerRoomMenu_Mobile_31(void){
     wram->wcf66 = 0x15;
     // ret
 }
+#endif // FEATURE_MOBILE
 
 void BattleTowerRoomMenu_UberRestrictionMessage(void){
     // LD_HL(mText_UberRestriction);
@@ -6555,6 +6572,7 @@ bool BattleTower_UbersCheck(void){
     return false;
 }
 
+#if FEATURE_MOBILE
 // CallMobileAPIAndIncrementBattleTowerRoomMenuJumptable
 void Function119e2b(uint8_t a, mobile_api_data_s* data){
     // CALL(aMobileAPI);
@@ -6562,6 +6580,7 @@ void Function119e2b(uint8_t a, mobile_api_data_s* data){
 
     return BattleTowerRoomMenu_IncrementJumptable();
 }
+#endif // FEATURE_MOBILE
 
 void BattleTowerRoomMenu_IncrementJumptable(void){
     // LD_HL(wBattleTowerRoomMenuJumptableIndex);
@@ -6570,6 +6589,7 @@ void BattleTowerRoomMenu_IncrementJumptable(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 // pushc
 // setcharmap ascii
 const char XGameCodePrefix[] = "X-Game-code:\n";
@@ -6783,6 +6803,7 @@ uint8_t* Function119ec2(uint8_t* hl){
     // RET;
     return hl;
 }
+#endif // FEATURE_MOBILE
 
 bool BattleTowerRoomMenu2(void){
     // LDH_A_addr(rSVBK);
@@ -6798,6 +6819,7 @@ bool BattleTowerRoomMenu2(void){
         //jumptable ['.Jumptable', 'wBattleTowerRoomMenu2JumptableIndex']
 
     // Jumptable:
+#if FEATURE_MOBILE
         case 0x00: result = Function119f3f(); break; //dw ['Function119f3f'];
         case 0x01: result = Function119f45(); break; //dw ['Function119f45'];
         case 0x02: result = Function119f56(); break; //dw ['Function119f56'];
@@ -6813,8 +6835,10 @@ bool BattleTowerRoomMenu2(void){
         case 0x0c: result = Function11a2e6(); break; //dw ['Function11a2e6'];
         case 0x0d: result = Function11a302(); break; //dw ['Function11a302'];
         case 0x0e: result = Function11a33a(); break; //dw ['Function11a33a'];
+#endif // FEATURE_MOBILE
         case 0x0f: result = BattleTowerRoomMenu2_PlaceYesNoMenu(); break; //dw ['BattleTowerRoomMenu2_PlaceYesNoMenu'];
         case 0x10: result = BattleTowerRoomMenu2_UpdateYesNoMenu(); break; //dw ['BattleTowerRoomMenu2_UpdateYesNoMenu'];
+#if FEATURE_MOBILE
         case 0x11: result = Function11a357(); break; //dw ['Function11a357'];
         case 0x12: result = Function11a36b(); break; //dw ['Function11a36b'];
         case 0x13: result = Function11a38d(); break; //dw ['Function11a38d'];
@@ -6831,6 +6855,7 @@ bool BattleTowerRoomMenu2(void){
         case 0x1e: result = Function11a4fe(); break; //dw ['Function11a4fe'];
         case 0x1f: result = Function11a466(); break; //dw ['Function11a466'];
         case 0x20: result = Function11a47a(); break; //dw ['Function11a47a'];
+#endif // FEATURE_MOBILE
     }
 
     // LD_A_addr(wcd8c);
@@ -6842,6 +6867,7 @@ bool BattleTowerRoomMenu2(void){
     return result;
 }
 
+#if FEATURE_MOBILE
 bool Function119f3f(void){
     // CALL(aFunction11a5b9);
     Function11a5b9();
@@ -7354,6 +7380,7 @@ uint8_t* Function11a1ff(uint8_t* de, const uint8_t* hl){
         // goto asm_11a1ff;
     }
 }
+#endif // FEATURE_MOBILE
 
 bool BattleTowerRoomMenu2_PlaceYesNoMenu(void){
     // LD_HL(mMenuHeader_11a2de);
@@ -7526,6 +7553,7 @@ const struct MenuHeader MenuHeader_11a2de = {
     .defaultOption = 0,  // default option
 };
 
+#if FEATURE_MOBILE
 bool Function11a2e6(void){
     // CALL(aFunction11a63c);
     Function11a63c();
@@ -8075,6 +8103,7 @@ bool Function11a536(void){
     return true;
 
 }
+#endif // FEATURE_MOBILE
 
 bool BattleTowerRoomMenu2_IncrementJumptable(void){
     // LD_A_addr(wBattleTowerRoomMenu2JumptableIndex);
@@ -8655,6 +8684,7 @@ void BattleTowerRoomMenu_SetMessage(const txt_cmd_s* hl){
     // RET;
 }
 
+#if FEATURE_MOBILE
 void Function11a9ce(void){
     // CALL(aClearBGPalettes);
     ClearBGPalettes();
@@ -8702,6 +8732,7 @@ void Function11a9f4(void){
     RET;
 
 }
+#endif // FEATURE_MOBILE
 
 const txt_cmd_s Text_SaveFileWillBeSent[] = {
     text_start("SAVE FILE will be"
@@ -8829,6 +8860,7 @@ const txt_cmd_s Text_ThisBattleRoomPleaseWait[] = {
         t_done )
 };
 
+#if FEATURE_MOBILE
 // Mobile_HaveWantScreenSpecial
 void Function11ac3e(void){
     // CALL(aSpeechTextbox);
@@ -11641,6 +11673,7 @@ void Function11b93b(void){
     SaveAfterLinkTrade();
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 void AddMobileMonToParty(const species_t* species, const struct PartyMon* mobilemon, const uint8_t* ot, const uint8_t* nick, const struct MailMsg* mail){
     // LD_HL(wPartyCount);

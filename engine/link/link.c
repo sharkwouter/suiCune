@@ -32,6 +32,7 @@
 #include "../../mobile/mobile_41.h"
 #include "../../data/text/common.h"
 #include "../../data/items/catch_rate_items.h"
+#if FEATURE_NETWORKING
 #include "../../util/network.h"
 #include "../../util/serialize.h"
 
@@ -1569,6 +1570,7 @@ ConvertToGen2:
     RET;
 
 }
+#endif // FEATURE_NETWORKING
 
 item_t TimeCapsule_ReplaceTeruSama(item_t item){
     // LD_A_B;
@@ -1602,6 +1604,7 @@ item_t TimeCapsule_ReplaceTeruSama(item_t item){
 // INCLUDE "data/items/catch_rate_items.asm"
 }
 
+#if FEATURE_NETWORKING
 static void Link_CopyOTData(void* de_, const void* hl_, uint16_t bc){
     uint8_t* de = de_;
     const uint8_t* hl = hl_;
@@ -3993,6 +3996,7 @@ void Link_CheckCommunicationError(void){
     // RET;
 
 }
+#endif // FEATURE_NETWORKING
 
 void TryQuickSave(void){
     // LD_A_addr(wChosenCableClubRoom);
@@ -4015,6 +4019,7 @@ void TryQuickSave(void){
     // RET;
 }
 
+#if FEATURE_NETWORKING
 void CheckBothSelectedSameRoom(void){
     // LD_A_addr(wChosenCableClubRoom);
     // CALL(aLink_EnsureSync);
@@ -4226,3 +4231,22 @@ void CheckSRAM0Flag(void){
     RET;
 
 }
+
+#else
+// Stubbed out without networking.
+void CableClubCheckOtherPlayerGender(void) {
+    wram->wScriptVar = FALSE;
+}
+
+void LoadTradeScreenBorderGFX(void){
+    // FARCALL(av_LoadTradeScreenBorderGFX);
+    // RET;
+    return v_LoadTradeScreenBorderGFX();
+
+}
+
+void LinkTextboxAtHL(tile_t* hl, uint8_t b, uint8_t c){
+    LinkTextbox(hl, b, c);
+}
+
+#endif // FEATURE_NETWORKING

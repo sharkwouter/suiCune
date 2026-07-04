@@ -4,6 +4,7 @@
 #include "../../home/text.h"
 #include "../../home/delay.h"
 
+#if FEATURE_NETWORKING
 void PlaceWaitingText(void){
     // hlcoord(3, 10, wTilemap);
     // LD_B(1);
@@ -31,3 +32,4 @@ void PlaceWaitingText(void){
     // JP(mDelayFrames);
     return DelayFrames(50);
 }
+#endif // FEATURE_NETWORKING

@@ -96,10 +96,12 @@ const struct MapEvents PokecomCenter_MapEvents = {
 
 bool PokecomCenter_MapScripts_Scene0(script_s* s) {
     SCRIPT_BEGIN
+#if FEATURE_MOBILE
     setval(BATTLETOWERACTION_10) // 5671d checks if a trade was made
     special(BattleTowerAction)
     iffalse_jump(GoldenrodPokecenter1F_noTrade) //$2967
     sdefer(GoldenrodPokecenter1F_scenejmp01) //$6F68 reveiced pokemon from trade corner dialogue
+#endif // FEATURE_MOBILE
     s_end
     SCRIPT_END
 }
@@ -154,6 +156,7 @@ bool GoldenrodPokecenter1FNurseScript(script_s* s) {
 }
 bool GoldenrodPokecenter1FTradeCornerAttendantScript(script_s* s) {
     SCRIPT_BEGIN
+#if FEATURE_MOBILE
     special(SetBitsForLinkTradeRequest)
     opentext
     writetext(GoldenrodPokecomCenterWelcomeToTradeCornerText) //$2d6a
@@ -323,6 +326,9 @@ playerHasEggTicket:
     sjump(GoldenrodPokecenter1FTradeCornerAttendantScript_receivedOddEgg)
 eggTicketExchangeNotRunning:
     writetext(GoldenrodPokecomCenterNoEggTicketServiceText) //$2270 ; 568AF
+#else
+    writetext(GoldenrodPokecomCenterMakingPreparationsText)
+#endif // FEATURE_MOBILE
     waitbutton
     closetext
     s_end
@@ -338,6 +344,7 @@ bool GoldenrodPokecenter1FTradeCornerAttendantScript_receivedOddEgg(script_s* s)
 }
 bool GoldenrodPokecenter1F_NewsMachineScript(script_s* s) {
     SCRIPT_BEGIN
+#if FEATURE_MOBILE
     special(Mobile_DummyReturnFalse) // 568B9
     iftrue(mobileEnabled)
     jumptext(GoldenrodPokecomCenterNewsMachineNotYetText) // not in operation yet
@@ -402,6 +409,9 @@ mobileError:
     special(BattleTowerMobileError) // mobile error
     closetext
     s_end
+#else
+    jumptext(GoldenrodPokecomCenterNewsMachineNotYetText) // not in operation yet
+#endif // FEATURE_MOBILE
     SCRIPT_END
 }
 bool GoldenrodPokecenter1F_GSBallSceneLeft(script_s* s) {

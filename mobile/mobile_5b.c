@@ -10,6 +10,7 @@
 #include "../home/text.h"
 #include "../engine/gfx/color.h"
 
+#if FEATURE_MOBILE
 static void MobileAdapterCheck_RunJumptable(void){
     // XOR_A_A;
     // LD_addr_A(wJumptableIndex);
@@ -76,6 +77,7 @@ static void MobileAdapterCheck_RunJumptable(void){
     } while(wram->wd002 != 0xff);
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 // Function16c000
 void MobileAdapterCheck(void){
@@ -100,6 +102,7 @@ void MobileAdapterCheck(void){
     bit_set(wram->wJoypadDisable, JOYPAD_DISABLE_SGB_TRANSFER_F);
 // Do stuff
     // CALL(aMobileSystemSplashScreen_InitGFX);  // Load GFX
+#if FEATURE_MOBILE
     MobileSystemSplashScreen_InitGFX();
     // FARCALL(aSetRAMStateForMobile);
     SetRAMStateForMobile();
@@ -109,6 +112,7 @@ void MobileAdapterCheck(void){
     MobileAdapterCheck_RunJumptable();
     // FARCALL(aDisableMobile);
     DisableMobile();
+#endif // FEATURE_MOBILE
 // Prevent this routine from running again
 // until the next time the system is turned on
     // XOR_A_A;
@@ -121,6 +125,7 @@ void MobileAdapterCheck(void){
     // RET;
 }
 
+#if FEATURE_MOBILE
 void Function16c089(void){
     // LD_A(0x1);
     // LD_addr_A(wd1eb);
@@ -1112,3 +1117,4 @@ const uint16_t Unknown_16cfb9[] = {
     rgb(27, 11, 12),
     rgb( 7,  7,  7),
 };
+#endif // FEATURE_MOBILE

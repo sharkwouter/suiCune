@@ -248,6 +248,7 @@ const struct MenuHeader DebugMobileConnection_Menu = {
     .defaultOption = DEBUGMOBILE_BACK,
 };
 
+#if FEATURE_MOBILE
 static void DebugMobileConnection(void) {
     LoadMenuHeader(&DebugMobileConnection_Menu);
     bool cancel = VerticalMenu();
@@ -260,6 +261,7 @@ static void DebugMobileConnection(void) {
     ExitMenu();
     return;
 }
+#endif // FEATURE_MOBILE
 
 static void DebugFlagMenu(void) {
     LoadStandardMenuHeader();
@@ -373,9 +375,11 @@ const struct MenuHeader MenuHeader = {
             case DEBUGFIELDITEM_WILD_BATTLE:
                 DebugWildBattleMenu();
                 break;
+#if FEATURE_MOBILE
             case DEBUGFIELDITEM_MOBILE:
                 DebugMobileConnection();
                 goto loop;
+#endif // FEATURE_MOBILE
             case DEBUGFIELDITEM_EXIT:
                 break;
             }

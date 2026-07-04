@@ -21,6 +21,7 @@
 #include "../data/text/common.h"
 
 bool MainMenu_Mobile(void){
+#if FEATURE_MOBILE
     // CALL(aClearBGPalettes);
     ClearBGPalettes();
     // LD_A(MUSIC_MOBILE_ADAPTER_MENU);
@@ -31,9 +32,11 @@ bool MainMenu_Mobile(void){
     Function4a6c5(MUSIC_MOBILE_ADAPTER_MENU);
     Function49f0a();
     Function49f16();
+#endif // FEATURE_MOBILE
     return false;
 }
 
+#if FEATURE_MOBILE
 // MobileMenu_Init
 void Function49f0a(void){
     // CALL(aClearBGPalettes);
@@ -990,8 +993,10 @@ void Function4a492(void){
     v_CrystalCGB_MobileLayout0();
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 bool MainMenu_MobileStudium(void){
+#if FEATURE_MOBILE
     // LD_A_addr(wStartDay);
     // LD_B_A;
     uint8_t day = gPlayer.startDay;
@@ -1025,9 +1030,11 @@ bool MainMenu_MobileStudium(void){
     // LD_addr_A(wStartSecond);
     gPlayer.startSecond = sec;
     // RET;
+#endif // FEATURE_MOBILE
     return false;
 }
 
+#if FEATURE_MOBILE
 // MobileMenu_MessagesLoop
 void Function4a4c4(void){
 entry:
@@ -1426,3 +1433,4 @@ tile_t* Function4a6d8(tile_t* hl, uint8_t b, uint8_t c, uint8_t a){
 //  endc
 
 }
+#endif // FEATURE_MOBILE

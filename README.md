@@ -79,6 +79,8 @@ Then run suiCune to launch
 | `FASTBG=1`  | Removes extra frame delays on render, increasing the framerate.
 | `BUGFIX=1`  | Enables bugfixes for suiCune (see util/bugfix.h).
 | `USE_PCG=1` | Uses the PCG rng instead of the default Crystal one.
+| `NETWORK=0` | Disables networking (and mobile) features.
+| `MOBILE=0`  | Disables mobile features.
 
 #### CMake
 
@@ -87,6 +89,8 @@ Then run suiCune to launch
 | `-DFASTBG=1`  | Removes extra frame delays on render, increasing the framerate.
 | `-DBUGFIX=1`  | Enables bugfixes for suiCune (see util/bugfix.h).
 | `-DUSE_PCG=1` | Uses the PCG rng instead of the default Crystal one.
+| `-DFEATURE_NETWORKING=0` | Disables networking (and mobile) features.
+| `-DFEATURE_MOBILE=0`  | Disables mobile features.
 
 ## Save compatibility
 

@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "../lib/mobile/main.h"
 
+#if FEATURE_MOBILE
 //  Mobile
 void MobileAPI(uint8_t a, mobile_api_data_s *api){
     // CP_A(0x2);
@@ -156,6 +157,7 @@ void MobileTimer(void){
     // POP_AF;
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 //  //  unreferenced
 void Function3ed7(void){

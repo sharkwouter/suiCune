@@ -1,4 +1,5 @@
 #include "../../../constants.h"
+#include "battle_tower.h"
 #include "trainer_text.h"
 #include "../../../home/text.h"
 #include "../../../home/sram.h"
@@ -199,153 +200,155 @@ void BattleTowerText(uint8_t c){
 //  1: Intro text
 //  2: Player lost
 //  3: Player won
-    // ld a, $05
-    // call OpenSRAM;$2f9d
-    OpenSRAM(MBANK(as5_a800));
-    struct EZChatAddr addr = BattleTowerText_GetEZChatAddress(c);
-    // ld a, c
-    // cp $01
-    // jr nz, jr_047_400f
-    // call Call_047_4033
-    // jr jr_047_4016
-    // jr_047_400f:
-    // call Call_047_4033
-    // and a
-    // jr z, jr_047_401d
-    // dec a
-    // jr_047_4016:
-    // and a
-    // jr z, jr_047_401d
+    if(gBattleTowerType == BATTLE_TOWER_MOBILE) {
+        // ld a, $05
+        // call OpenSRAM;$2f9d
+        OpenSRAM(MBANK(as5_a800));
+        struct EZChatAddr addr = BattleTowerText_GetEZChatAddress(c);
+        // ld a, c
+        // cp $01
+        // jr nz, jr_047_400f
+        // call Call_047_4033
+        // jr jr_047_4016
+        // jr_047_400f:
+        // call Call_047_4033
+        // and a
+        // jr z, jr_047_401d
+        // dec a
+        // jr_047_4016:
+        // and a
+        // jr z, jr_047_401d
 
-    // dec a
-    // add hl, de
-    // jr jr_047_4016
+        // dec a
+        // add hl, de
+        // jr jr_047_4016
 
-// jr_047_401d:
-    // ld de, $c688
-    // ld bc, EASY_CHAT_MESSAGE_LENGTH
-    // call CopyBytes;$2ff2
-    CopyBytes(wram->wc688, addr.hl, EASY_CHAT_MESSAGE_LENGTH);
-    // call CloseSRAM;$2fad
-    CloseSRAM();
-    // ld de, $c5b9
-    // ld bc, $c688
-    // call PrintEZChatBattleMessage;Call_047_40b3
-    PrintEZChatBattleMessage(coord(1, 14, wram->wTilemap), wram->wc688);
-    // ret
-    return;
-#if 0
-    // LDH_A_addr(rSVBK);
-    // PUSH_AF;
-    // LD_A(BANK(wBT_OTTrainerClass));
-    // LDH_addr_A(rSVBK);
-#if defined(_CRYSTAL11)
-    // LD_HL(wBT_OTTrainerClass);
-    uint8_t a = wram->wBT_OTTrainer.trainerClass;
-#else
-//  BUG ALERT
-//  Instead of loading the Trainer Class, this routine
-//  loads the 6th character in the Trainer's name, then
-//  uses it to get the gender of the trainer.
-//  As a consequence, the enemy trainer's dialog will
-//  always be sampled from the female array.
-    // LD_HL(wBT_OTName + NAME_LENGTH_JAPANESE - 1);
-    uint8_t a = wram->wBT_OTTrainer.name[NAME_LENGTH_JAPANESE - 1];
-#endif
-    // LD_A_hl;
-    // DEC_A;
-    // LD_E_A;
-    // LD_D(0);
-    // LD_HL(mBTTrainerClassGenders);
-    // ADD_HL_DE;
-    // LD_A_hl;
-    uint8_t gender = BTTrainerClassGenders[a - 1];
-    // AND_A_A;
-    // IF_NZ goto female;
-    const struct TrainerTexts* hl;
-    if(gender != 0) {
-    // generate a random number between 0 and 24
-        // LDH_A_addr(hRandomAdd);
-        // AND_A(0x1f);
-        a = hram.hRandomAdd & 0x1f;
-        // CP_A(25);
-        // IF_C goto okay0;
-        if(a >= 25) {
-            // SUB_A(25);
-            a -= 25;
-        }
-
-    // okay0:
-        // LD_HL(mBTMaleTrainerTexts);
-        hl = &BTMaleTrainerTexts;
-        // goto proceed;
+    // jr_047_401d:
+        // ld de, $c688
+        // ld bc, EASY_CHAT_MESSAGE_LENGTH
+        // call CopyBytes;$2ff2
+        CopyBytes(wram->wc688, addr.hl, EASY_CHAT_MESSAGE_LENGTH);
+        // call CloseSRAM;$2fad
+        CloseSRAM();
+        // ld de, $c5b9
+        // ld bc, $c688
+        // call PrintEZChatBattleMessage;Call_047_40b3
+        PrintEZChatBattleMessage(coord(1, 14, wram->wTilemap), wram->wc688);
+        // ret
+        return;
     }
     else {
-    // female:
-    // generate a random number between 0 and 14
-        // LDH_A_addr(hRandomAdd);
-        // AND_A(0xf);
-        a = hram.hRandomAdd & 0xf;
-        // CP_A(15);
-        // IF_C goto okay1;
-        if(a >= 15) {
-            // SUB_A(15);
-            a -= 15;
+        // LDH_A_addr(rSVBK);
+        // PUSH_AF;
+        // LD_A(BANK(wBT_OTTrainerClass));
+        // LDH_addr_A(rSVBK);
+    //  BUG ALERT
+    //  Instead of loading the Trainer Class, this routine
+    //  loads the 6th character in the Trainer's name, then
+    //  uses it to get the gender of the trainer.
+    //  As a consequence, the enemy trainer's dialog will
+    //  always be sampled from the female array.
+    #if BUGFIX_BATTLE_TOWER_DIALOGUE
+        // LD_HL(wBT_OTTrainerClass);
+        uint8_t a = wram->wBT_OTTrainer.trainerClass;
+    #else
+        // LD_HL(wBT_OTName + NAME_LENGTH_JAPANESE - 1);
+        uint8_t a = wram->wBT_OTTrainer.name[NAME_LENGTH_JAPANESE - 1];
+    #endif
+        // LD_A_hl;
+        // DEC_A;
+        // LD_E_A;
+        // LD_D(0);
+        // LD_HL(mBTTrainerClassGenders);
+        // ADD_HL_DE;
+        // LD_A_hl;
+        uint8_t gender = BTTrainerClassGenders[a - 1];
+        // AND_A_A;
+        // IF_NZ goto female;
+        const struct TrainerTexts* hl;
+        if(gender != 0) {
+        // generate a random number between 0 and 24
+            // LDH_A_addr(hRandomAdd);
+            // AND_A(0x1f);
+            a = hram.hRandomAdd & 0x1f;
+            // CP_A(25);
+            // IF_C goto okay0;
+            if(a >= 25) {
+                // SUB_A(25);
+                a -= 25;
+            }
+
+        // okay0:
+            // LD_HL(mBTMaleTrainerTexts);
+            hl = &BTMaleTrainerTexts;
+            // goto proceed;
+        }
+        else {
+        // female:
+        // generate a random number between 0 and 14
+            // LDH_A_addr(hRandomAdd);
+            // AND_A(0xf);
+            a = hram.hRandomAdd & 0xf;
+            // CP_A(15);
+            // IF_C goto okay1;
+            if(a >= 15) {
+                // SUB_A(15);
+                a -= 15;
+            }
+
+        // okay1:
+            // LD_HL(mBTFemaleTrainerTexts);
+            hl = &BTFemaleTrainerTexts;
         }
 
-    // okay1:
-        // LD_HL(mBTFemaleTrainerTexts);
-        hl = &BTFemaleTrainerTexts;
-    }
+    // proceed:
+        // LD_B(0);
+        // DEC_C;
+        // IF_NZ goto restore;
+        if(--c == 0) {
+            // LD_addr_A(wBT_TrainerTextIndex);
+            wram->wBT_TrainerTextIndex = a;
+            // goto okay2;
+        }
+        else {
+        // restore:
+            // LD_A_addr(wBT_TrainerTextIndex);
+            a = wram->wBT_TrainerTextIndex;
+        }
 
-// proceed:
-    // LD_B(0);
-    // DEC_C;
-    // IF_NZ goto restore;
-    if(--c == 0) {
-        // LD_addr_A(wBT_TrainerTextIndex);
-        wram->wBT_TrainerTextIndex = a;
-        // goto okay2;
+    // okay2:
+        // PUSH_AF;
+        // ADD_HL_BC;
+        // ADD_HL_BC;
+        const txt_cmd_s* txt;
+        switch(c) {
+        default:
+        case 0: txt = hl->greetings[a]; break;
+        case 1: txt = hl->playerLost[a]; break;
+        case 2: txt = hl->playerWon[a]; break;
+        }
+        // LD_A_hli;
+        // LD_C_A;
+        // LD_A_hl;
+        // LD_H_A;
+        // LD_L_C;
+        // POP_AF;
+        // LD_C_A;
+        // LD_B(0);
+        // ADD_HL_BC;
+        // ADD_HL_BC;
+        // LD_A_hli;
+        // LD_C_A;
+        // LD_A_hl;
+        // LD_L_C;
+        // LD_H_A;
+        // bccoord(1, 14, wTilemap);
+        // POP_AF;
+        // LDH_addr_A(rSVBK);
+        // CALL(aPlaceHLTextAtBC);
+        PlaceHLTextAtBC(coord(1, 14, wram->wTilemap), txt);
+        // RET;
     }
-    else {
-    // restore:
-        // LD_A_addr(wBT_TrainerTextIndex);
-        a = wram->wBT_TrainerTextIndex;
-    }
-
-// okay2:
-    // PUSH_AF;
-    // ADD_HL_BC;
-    // ADD_HL_BC;
-    const txt_cmd_s* txt;
-    switch(c) {
-    default:
-    case 0: txt = hl->greetings[a]; break;
-    case 1: txt = hl->playerLost[a]; break;
-    case 2: txt = hl->playerWon[a]; break;
-    }
-    // LD_A_hli;
-    // LD_C_A;
-    // LD_A_hl;
-    // LD_H_A;
-    // LD_L_C;
-    // POP_AF;
-    // LD_C_A;
-    // LD_B(0);
-    // ADD_HL_BC;
-    // ADD_HL_BC;
-    // LD_A_hli;
-    // LD_C_A;
-    // LD_A_hl;
-    // LD_L_C;
-    // LD_H_A;
-    // bccoord(1, 14, wTilemap);
-    // POP_AF;
-    // LDH_addr_A(rSVBK);
-    // CALL(aPlaceHLTextAtBC);
-    PlaceHLTextAtBC(coord(1, 14, wram->wTilemap), txt);
-    // RET;
-#endif
 // INCLUDE "mobile/fixed_words.asm"
 
 // INCLUDE "data/trainers/genders.asm"

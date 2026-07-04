@@ -466,6 +466,7 @@ void BattleTurn(void){
 
         // CALL(aIsMobileBattle);
         // IF_NZ goto not_disconnected;
+    #if FEATURE_MOBILE
         if(IsMobileBattle()) {
             // FARCALL(aFunction100da5);
             Function100da5();
@@ -476,6 +477,7 @@ void BattleTurn(void){
             if(Function100dd8())
                 goto quit;
         }
+    #endif // FEATURE_MOBILE
 
     // not_disconnected:
         // CALL(aCheckPlayerLockedIn);
@@ -3853,6 +3855,7 @@ static void WinTrainerBattle(void){
 
     // CALL(aIsMobileBattle);
     // IF_Z goto mobile;
+#if FEATURE_MOBILE
     if(IsMobileBattle()){
     // mobile:
         // CALL(aBattleWinSlideInEnemyTrainerFrontpic);
@@ -3866,6 +3869,7 @@ static void WinTrainerBattle(void){
         // RET;
         return;
     }
+#endif // FEATURE_MOBILE
     // LD_A_addr(wLinkMode);
     // AND_A_A;
     // RET_NZ ;
@@ -4536,12 +4540,14 @@ void JumpToPartyMenuAndPrintText(void){
 u8_flag_s SelectBattleMon(void){
     // CALL(aIsMobileBattle);
     // IF_Z goto mobile;
+#if FEATURE_MOBILE
     if(IsMobileBattle()) {
     // mobile:
         // FARCALL(aMobile_PartyMenuSelect);
         // RET;
         return u8_flag(0, Mobile_PartyMenuSelect());
     }
+#endif // FEATURE_MOBILE
     // FARCALL(aPartyMenuSelect);
     u8_flag_s res = PartyMenuSelect();
     // RET;
@@ -4738,6 +4744,7 @@ static void LostBattle(void){
             // LD_HL(mLostAgainstText);
             // CALL(aIsMobileBattle);
             // IF_Z goto mobile;
+#if FEATURE_MOBILE
             if(IsMobileBattle()) {
             // mobile:
             //  Remove the enemy from the screen.
@@ -4759,6 +4766,7 @@ static void LostBattle(void){
                 // RET;
                 return;
             }
+#endif // FEATURE_MOBILE
 
         // text:
             // CALL(aStdBattleTextbox);
@@ -7606,12 +7614,14 @@ void Battle_DummyFunction(void){
 static bool BattleMenu_PKMN_GetMenu(void) {
     // CALL(aIsMobileBattle);
     // IF_Z goto mobile;
+#if FEATURE_MOBILE
     if(IsMobileBattle()) {
     // mobile:
         // FARCALL(aMobileBattleMonMenu);
         return MobileBattleMonMenu();
         // RET;
     }
+#endif // FEATURE_MOBILE
     // FARCALL(aBattleMonMenu);
     return BattleMonMenu();
     // RET;
@@ -8046,6 +8056,7 @@ bool LoadBattleMenu2(void){
         return false;
     }
 
+#if FEATURE_MOBILE
 // mobile:
     // FARCALL(aMobile_LoadBattleMenu);
     Mobile_LoadBattleMenu();
@@ -8066,6 +8077,7 @@ bool LoadBattleMenu2(void){
         // CALL(aDelayFrames);
         DelayFrames(60);
     }
+#endif // FEATURE_MOBILE
 
 // error:
     // SCF;
@@ -8603,12 +8615,14 @@ MoveSelectionScreen:
     // IF_NZ goto not_mobile;
     // FARCALL(aMobile_MoveSelectionScreen);
     // RET;
+#if FEATURE_MOBILE
     if(IsMobileBattle()) {
     // TODO: Convert Mobile_MoveSelectionScreen
         // FARCALL(aMobile_MoveSelectionScreen);
         // RET;
         return Mobile_MoveSelectionScreen() != 0;
     }
+#endif // FEATURE_MOBILE
 
 // not_mobile:
     // LD_HL(wEnemyMonMoves);
@@ -9497,7 +9511,9 @@ bool CheckEnemyLockedIn(void){
 
 void LinkBattleSendReceiveAction(void){
     // FARCALL(av_LinkBattleSendReceiveAction);
+#if FEATURE_NETWORKING
     v_LinkBattleSendReceiveAction();
+#endif // FEATURE_NETWORKING
     // RET;
 }
 
@@ -12862,6 +12878,7 @@ void DisplayLinkBattleResult(void){
         return DisplayLinkBattleResult_Mobile_InvalidBattle();
     // CALL(aIsMobileBattle2);
     // IF_NZ goto proceed;
+#if FEATURE_MOBILE
     if(IsMobileBattle2() && bit_test(wram->wcd2a, 4)) {
         // LD_HL(wcd2a);
         // BIT_hl(4);
@@ -12869,6 +12886,7 @@ void DisplayLinkBattleResult(void){
         // FARCALL(aDetermineLinkBattleResult);
         DetermineLinkBattleResult();
     }
+#endif // FEATURE_MOBILE
 
 // proceed:
     // LD_A_addr(wBattleResult);
@@ -13945,9 +13963,11 @@ static void BattleStartMessage(void){
     if(!IsMobileBattle2())
         return;
 
+#if FEATURE_MOBILE
     // LD_C(0x2);  // start
     // FARCALL(aMobile_PrintOpponentBattleMessage);
     Mobile_PrintOpponentBattleMessage(0x2);
+#endif // FEATURE_MOBILE
 
     // RET;
 }

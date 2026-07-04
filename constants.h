@@ -9,6 +9,7 @@ extern void (*convertedFunc[])(void);
 //#include "charmap.h"
 #include "util/bugfix.h"
 #include "util/enhancements.h"
+#include "util/features.h"
 #include "util/debug.h"
 #include "util/log.h"
 #include "macros.h"

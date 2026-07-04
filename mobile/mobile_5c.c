@@ -449,6 +449,7 @@ const char PichuAnimatedMobileGFX[] = "gfx/mobile/pichu_animated.png";
 const char ElectroBallMobileGFX[] = "gfx/mobile/electro_ball.png";
 const char PichuBorderMobileGFX[] = "gfx/mobile/pichu_border.png";
 
+#if FEATURE_MOBILE
 void Function1719c8(void){
     // LDH_A_addr(hInMenu);
     // PUSH_AF;
@@ -1286,3 +1287,4 @@ const char Stadium2N64Tilemap[] =
 #endif
 
 const char Stadium2N64Attrmap[] = "gfx/mobile/stadium2_n64.attrmap";
+#endif // FEATURE_MOBILE

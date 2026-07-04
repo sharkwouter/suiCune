@@ -23,6 +23,7 @@ bool Script_BattleTowerSkipExplanation(script_s* s);
 bool Script_BattleTowerHopeToServeYouAgain(script_s* s);
 bool Script_MobileError2(script_s* s);
 bool Script_WaitButton(script_s* s);
+bool Script_WaitButtonReloadParty(script_s* s);
 bool Script_BattleTowerEndChallenge(script_s* s);
 bool Script_BattleTowerLoopToMenu(script_s* s);
 bool Script_BattleTowerError(script_s* s);

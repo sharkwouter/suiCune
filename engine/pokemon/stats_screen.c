@@ -73,6 +73,7 @@ void BattleStatsScreenInit(void){
     // LD_A_addr(wLinkMode);
     // CP_A(LINK_MOBILE);
     // JR_NZ (mStatsScreenInit);
+#if FEATURE_MOBILE
     if(wram->wLinkMode != LINK_MOBILE)
         return StatsScreenInit();
 
@@ -83,6 +84,9 @@ void BattleStatsScreenInit(void){
         return StatsScreenInit();
     // JR(mv_MobileStatsScreenInit);
     return v_MobileStatsScreenInit();
+#else
+    return StatsScreenInit();
+#endif
 }
 
 void StatsScreenInit(void){
@@ -91,11 +95,13 @@ void StatsScreenInit(void){
     return StatsScreenInit_Common(StatsScreenMain);
 }
 
+#if FEATURE_MOBILE
 void v_MobileStatsScreenInit(void){
     // LD_HL(mStatsScreenMobile);
     // JR(mStatsScreenInit_gotaddress);
     return StatsScreenInit_Common(StatsScreenMobile);
 }
+#endif // FEATURE_MOBILE
 
 // DEPRECATED: Unused copy of StatsScreenInit_Common
 void StatsScreenInit_gotaddress(void){
@@ -217,6 +223,7 @@ void StatsScreenMain(void){
 
 }
 
+#if FEATURE_MOBILE
 void StatsScreenMobile(void){
     // XOR_A_A;
     // LD_addr_A(wJumptableIndex);
@@ -253,6 +260,7 @@ void StatsScreenMobile(void){
 // exit:
     // RET;
 }
+#endif // FEATURE_MOBILE
 
 enum {
     JT_MON_STATS_INIT,
