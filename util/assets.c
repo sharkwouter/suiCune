@@ -296,13 +296,14 @@ static void CopyPNG2bppColorTileToGB(uint8_t* dest, const uint8_t* src, int stri
             for(int i = n - 1; i >= 0; --i) {
                 pixel = (pixel << 8) | start[i];
             }
-            if(pixel == pal[3]) {
+            pixel &= 0xffffff; // Mask off transparency if it exists.
+            if(pixel == (pal[3] & 0xffffff)) {
                 pixel = 0x3;
-            } else if(pixel == pal[2]) {
+            } else if(pixel == (pal[2] & 0xffffff)) {
                 pixel = 0x2;
-            } else if(pixel == pal[1]) {
+            } else if(pixel == (pal[1] & 0xffffff)) {
                 pixel = 0x1;
-            } else if(pixel == pal[0]) {
+            } else if(pixel == (pal[0] & 0xffffff)) {
                 pixel = 0x0;
             } else {
                 log_err("Pixel error #%06X.\n", pixel);
