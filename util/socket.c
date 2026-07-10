@@ -13,6 +13,12 @@
 #include <poll.h>
 #include <fcntl.h>
 #include <netdb.h>
+#define IPV6_SUPPORTED 1
+#elif defined(__PSP__)
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <netdb.h>
+#define max(a,b) ((a)<(b)) ? (b) : (a)
 #endif
 
 // Print last socket-related error
@@ -42,7 +48,7 @@ void socket_perror(const char *func)
 // Convert a sockaddr to a printable string
 int socket_straddr(char *res, unsigned res_len, struct sockaddr *addr, socklen_t addrlen)
 {
-#if defined(__unix__)
+#if defined(__unix__) || defined(__PSP__)
     (void)addrlen;
 
     void *inaddr;
@@ -51,10 +57,12 @@ int socket_straddr(char *res, unsigned res_len, struct sockaddr *addr, socklen_t
         struct sockaddr_in *addr4 = (struct sockaddr_in *)addr;
         inaddr = &addr4->sin_addr;
         inport = ntohs(addr4->sin_port) & 0xFFFF;
+    #ifdef IPV6_SUPPORTED
     } else if (addr->sa_family == AF_INET6) {
         struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)addr;
         inaddr = &addr6->sin6_addr;
         inport = ntohs(addr6->sin6_port) & 0xFFFF;
+    #endif
     } else {
         return -1;
     }
@@ -154,7 +162,7 @@ int socket_wait(SOCKET *sockets, unsigned count, int delay)
 // Set whether connect() and recv() calls on a socket block
 int socket_setblocking(SOCKET socket, int flag)
 {
-#if defined(__unix__)
+#if defined(__unix__) || defined(__PSP__)
     int flags = fcntl(socket, F_GETFL);
     if (flags == -1) {
         perror("fcntl");
@@ -176,7 +184,8 @@ int socket_setblocking(SOCKET socket, int flag)
 // Connect a socket to a user-provided hostname and port
 SOCKET socket_connect(const char *host, const char *port)
 {
-    struct addrinfo hints = {
+#ifdef IPV6_SUPPORT
+    struct hostent hints = {
         .ai_family = AF_UNSPEC,
         .ai_socktype = SOCK_STREAM,
         .ai_protocol = IPPROTO_TCP
@@ -211,10 +220,25 @@ SOCKET socket_connect(const char *host, const char *port)
     socket_seterror(error);
     if (!info) return INVALID_SOCKET;
     return sock;
+#else
+    SOCKET sock = INVALID_SOCKET;
+    int error = 0;
+    errno = 0;
+    sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sock == INVALID_SOCKET) {
+        socket_perror("socket");
+    } else if (connect(sock, host, strlen(host)) != 0) {
+        error = socket_geterror();
+        socket_close(sock);
+    }
+    socket_seterror(error);
+    return sock;
+#endif
 }
 
 int resolve_host(const char* host, const char* port, struct sockaddr* addr) 
 {
+#ifdef IPV6_SUPPORT
     struct addrinfo hints = {
         .ai_family = AF_UNSPEC,
         .ai_socktype = SOCK_STREAM,
@@ -231,8 +255,13 @@ int resolve_host(const char* host, const char* port, struct sockaddr* addr)
 #endif
         return 0;
     }
+
     struct addrinfo *info = result;
     memcpy(addr, info->ai_addr, info->ai_addrlen);
     freeaddrinfo(result);
     return 1;
+#else
+    memcpy(addr, host, strlen(host));
+    return 1;
+#endif
 }

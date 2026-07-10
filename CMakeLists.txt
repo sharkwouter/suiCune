@@ -9,6 +9,9 @@ project(suiCune)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED True)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -Wno-unused-label")
+if(PSP)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error=format= -Wno-incompatible-pointer-types -Wno-error=unused-parameter")
+endif()
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS} -Og -g -DDEBUG=1")
 
@@ -36,12 +39,12 @@ option(FEATURE_NETWORKING "Enable networking features" ON)
 if(NOT FEATURE_NETWORKING)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DFEATURE_NETWORKING=0")
   set(FEATURE_MOBILE_DEFAULT OFF)
-endif(FEATURE_NETWORKING)
+endif(NOT FEATURE_NETWORKING)
 
 option(FEATURE_MOBILE "Enable mobile adapter features" ${FEATURE_MOBILE_DEFAULT})
 if(NOT FEATURE_MOBILE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DFEATURE_MOBILE=0")
-endif(FEATURE_MOBILE)
+endif(NOT FEATURE_MOBILE)
 
 set(USE_PHYSFS_DEFAULT OFF)
 if(WIN32)
@@ -1090,3 +1093,14 @@ if(USE_PHYSFS)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${PHYSFS_LIBRARIES})
   endif()
 endif(USE_PHYSFS)
+
+if(PSP)
+  create_pbp_file(
+    TARGET ${PROJECT_NAME}
+    ICON_PATH NULL
+    BACKGROUND_PATH NULL
+    PREVIEW_PATH NULL
+    TITLE ${PROJECT_NAME}
+    VERSION 01.00
+  )
+endif()

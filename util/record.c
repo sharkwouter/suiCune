@@ -10,14 +10,16 @@
 
 #define MAX_FRAMES (60 * 60) // 60 seconds of video
 
-#ifndef _WIN32
-#include <linux/limits.h>
-#else
+#if defined(_WIN32)
 #ifdef _MSC_VER
 #ifndef PATH_MAX
 #define PATH_MAX 260
 #endif
 #endif
+#elif defined(__PSP__)
+#include <limits.h>
+#else
+#include <linux/limits.h>
 #endif
 
 struct priv_t {

@@ -4,7 +4,7 @@
 
 #include <errno.h>
 
-#if defined(__unix__)
+#if defined(__unix__) || defined(__PSP__)
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -40,6 +40,17 @@ typedef int SOCKET;
 #define SOCKET_EINPROGRESS WSAEINPROGRESS
 #define SOCKET_EALREADY WSAEALREADY
 #define SOCKET_EISCONN WSAEISCONN
+#elif defined(__PSP__)
+#define socket_close close
+#define socket_geterror() errno
+#define socket_seterror(e) errno = (e)
+#define SOCKET_EWOULDBLOCK EWOULDBLOCK
+#define SOCKET_EINPROGRESS EINPROGRESS
+#define SOCKET_EALREADY EALREADY
+#define SOCKET_EISCONN EISCONN
+#define SOCKET_ERROR (-1)
+#define INVALID_SOCKET (-1)
+typedef int SOCKET;
 #endif
 
 // ipv6 addr + colon + 5 char port + terminator

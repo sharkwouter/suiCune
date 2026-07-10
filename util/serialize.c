@@ -1264,7 +1264,7 @@ int Test_Serialize_Box(void) {
     const uint8_t* sram = GBToRAMAddr(sBox);
     const uint8_t* start = sram;
     const uint8_t* end = Deserialize_Box(&data, start);
-    if(end - start != size) {
+    if((uint32_t)(end - start) != size) {
         log_err("[FAILED] Failed to deserialize box data. Expected size %d, got %d\n",
             __func__,
             size,
@@ -1275,7 +1275,7 @@ int Test_Serialize_Box(void) {
     
     start = buffer;
     end = Serialize_Box(buffer, &data);
-    if(end - start != size) {
+    if((uint32_t)(end - start) != size) {
         log_err("[FAILED] Failed to serialize box data. Expected size %d, got %d\n",
             __func__,
             size,

@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdlib.h>
+#ifndef __PSP__
 #include <uchar.h>
+#endif
 #include <string.h>
 #include "../charmap.h"
 #include "../constants.h"
